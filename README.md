@@ -3,8 +3,8 @@ ShifterMan
 <p style="image align: left"><img src="https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan.jpg?raw=true"/></p>
 
 
-Shift Organiser.
-The Shift Organiser that organise the shifts for you.
+* Shift Organiser.
+* The Shift Organiser that organise the shifts for you.
 
 __By__:
 * Vladimir Novikov 
