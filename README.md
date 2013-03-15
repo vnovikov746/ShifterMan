@@ -4,7 +4,7 @@ ShifterMan
 
 
 * Shift Organiser.
-* The Shift Organiser that organise the shifts for you.
+* The Shift Organiser that organises the shifts for you.
 
 __By__:
 * Vladimir Novikov 
@@ -34,11 +34,11 @@ __Follow us__:
 
 The source code will be available in the project page in the repository.
 
-For you to understend better the code:
+For the better understanding of the source code:
 The code will be documented and explanations about the code would be also available in our wiki page.
 
 ### How to compile the project?
-Our project is written with C# language, for compiling the project you need to follow the next steps:
+Our project is written with the C# language, for compiling the project you need to follow the next steps:
 
 * __1)__ Download Visual Studio 2010 or higher.
 * __2)__ MORE STEPS WILL BE AVALIBLE IN THE FUTURE. 
@@ -52,7 +52,11 @@ Also you can add in this list bugs that you have found, we will appriciate it.
 
 ### Project License:
 
+n/a
+
 ### Project design:
+
+n/a
 
 ### Project Testing:
 Each developer writes tests as he code; by iteration unit testing, and according to bugs and experience full user flows tests. These tests will be run by someone who didn't write the code.
