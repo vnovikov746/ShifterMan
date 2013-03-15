@@ -35,11 +35,10 @@ __Follow us__:
 The source code will be available in the project page in the repository.
 
 For you to understend better the code:
-There wil be documentations in the classes about the classes, functions and variables.
-you will also find explanations about the code in our wiki page.
+The code will be documented and explanations about the code would be also available in our wiki page.
 
 ### How to compile the project?
-Our project is built with C# language, for compiling the project you need to follow the next steps:
+Our project is written with C# language, for compiling the project you need to follow the next steps:
 
 * __1)__ Download Visual Studio 2010 or higher.
 * __2)__ MORE STEPS WILL BE AVALIBLE IN THE FUTURE. 
@@ -48,14 +47,14 @@ Our project is built with C# language, for compiling the project you need to fol
 Each new version will be published in a new folder with the new version number.
 The new versions will be with the resolved bugs of the earlier versions and with new features.
 
-In bug Report on our wiki page you can find the list of bugs that have been solved and bugs that we need to work on.
-Also you can add in this list bugs that you have found, we will appritiate it.
+In bug Report on our wiki page you can find the list of bugs that have been resolved and bugs that need to be corrected.
+Also you can add in this list bugs that you have found, we will appriciate it.
 
 ### Project License:
 
 ### Project design:
 
 ### Project Testing:
-Each developer writes tests as he code; by iteration unit testing, and according to bugs and expiriance full user flows tests. These tests will be run by someone who didn't write the code.
+Each developer writes tests as he code; by iteration unit testing, and according to bugs and experience full user flows tests. These tests will be run by someone who didn't write the code.
 
 docx form: [Developer Guide](https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
