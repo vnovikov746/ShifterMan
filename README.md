@@ -22,8 +22,9 @@ __Follow us__:
 
 __Project Stages__:
 
-* [Presentation] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20presentation.pptx)
-* [Proposal] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20Proposal.docx)
+- [Presentation] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20presentation.pptx)
+
+- [Proposal] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20Proposal.docx)
 
 ## Development Documentation for ShifterMan:
 
