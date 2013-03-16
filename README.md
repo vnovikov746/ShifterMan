@@ -14,7 +14,7 @@ __By__:
 
 __Follow us__:
 
--    [Wiki Page](https://github.com/kakifish/ShifterMan/wiki)
+-    [Wiki Page](https://github.com/kakifish/ShifterMan/wiki/ShifterMan)
 
 -   [Source Code] (https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
 
