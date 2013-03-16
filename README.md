@@ -34,8 +34,8 @@ We will divide folders building into three layers:
 
 1) The _ShifterMans GUI_ (details will be Available soon).  
 
-2) The _ShifterMans logic_ (details will be Available soon).
+2) The _ShifterMans Logic_ (details will be Available soon).
 
-3) The _ShifterMans database_ (details will be Available soon).
+3) The _ShifterMans DataBase_ (details will be Available soon).
 
 docx form: [Developer Guide](https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
