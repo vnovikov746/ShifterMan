@@ -29,12 +29,10 @@ The source code will be available in the project page in the repository.
 For the better understanding of the source code:
 The code will be documented and explanations about the code would be also available in our wiki page.
 
-### Project License:
-
-n/a
-
 ### Project design:
-
-n/a
+We will divide folders building into four layers:  
+1) The _ShifterMans GUI_ (details will be Available soon).  
+3) The _ShifterMans logic_ (details will be Available soon).
+4) The _ShifterMans database_ (details will be Available soon).
 
 docx form: [Developer Guide](https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
