@@ -32,7 +32,9 @@ The code will be documented and explanations about the code would be also availa
 ### Project design:
 We will divide folders building into four layers:  
 1) The _ShifterMans GUI_ (details will be Available soon).  
+
 2) The _ShifterMans logic_ (details will be Available soon).
+
 3) The _ShifterMans database_ (details will be Available soon).
 
 docx form: [Developer Guide](https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
