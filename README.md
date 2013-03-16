@@ -14,7 +14,7 @@ __By__:
 
 __Follow us__:
 
--   [Wiki Page](https://github.com/kakifish/ShifterMan/wiki)
+-   Inception Stage [Wiki Page](https://github.com/kakifish/ShifterMan/wiki)
 
 -   [Documentations](https://github.com/kakifish/ShifterMan/tree/master/Documents)
 
