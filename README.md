@@ -20,6 +20,11 @@ __Follow us__:
 
 -   [Source Code] (https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
 
+__Project Stages__:
+
+* [Presentation] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20presentation.pptx)
+* [Proposal] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20Proposal.docx)
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
