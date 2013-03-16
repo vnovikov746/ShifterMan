@@ -30,7 +30,7 @@ For the better understanding of the source code:
 The code will be documented and explanations about the code would be also available in our wiki page.
 
 ### Project design:
-We will divide folders building into four layers:
+We will divide folders building into three layers:
 
 1) The _ShifterMans GUI_ (details will be Available soon).  
 
