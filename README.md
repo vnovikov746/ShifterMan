@@ -12,6 +12,8 @@ __By__:
 * Stanislav Kuzmin
 * Koby Vurgaft
 
+* Important note: The Project will be done as part of the Software-Engineering course in the "Azrieli Jerusalem College Of Engineering". You can find the link to the course page [here] (https://github.com/jce-il/se-class)
+
 __Follow us__:
 
 -   Inception Stage [Wiki Page](https://github.com/kakifish/ShifterMan/wiki)
