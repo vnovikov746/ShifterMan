@@ -28,6 +28,8 @@ __Project Stages__:
 
 - [Proposal] (https://github.com/kakifish/ShifterMan/blob/master/Documents/shifterMan%20Proposal.docx)
 
+- [SRS] (https://github.com/kakifish/ShifterMan/blob/master/Documents/ShifterMan_SRS.docx)
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
