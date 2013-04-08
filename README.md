@@ -20,7 +20,7 @@ __Follow us__:
 
 -   [Documentations](https://github.com/kakifish/ShifterMan/tree/master/Documents)
 
--   [Source Code] (https://github.com/kakifish/ShifterMan/wiki/NOT-YET-STARTED)
+-   [Source Code] (https://github.com/kakifish/ShifterMan/tree/master/ShifterMans%20Source%20Code/ShifterMans%20Source%20Code/ShifterMan)
 
 __Project Stages__:
 
