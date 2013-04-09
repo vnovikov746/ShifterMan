@@ -13,7 +13,7 @@ public partial class Account_Register : System.Web.UI.Page
     private string getConnectionString()
     {
         //sets the connection string from your web config file "ConnString" is the name of your Connection String
-        return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManConnectionString"].ConnectionString;
+        return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
     }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -89,7 +89,6 @@ public partial class Account_Register : System.Web.UI.Page
 
     public static void ClearControls(Control Parent)
     {
-
         if (Parent is TextBox)
         { (Parent as TextBox).Text = string.Empty; }
         else
