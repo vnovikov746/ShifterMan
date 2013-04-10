@@ -6,6 +6,12 @@
 <head id="Head1" runat="server">
     <title></title>
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .style1
+        {
+            height: 26px;
+        }
+    </style>
 </head>
 <body>
     <form id="Form1" runat="server">
@@ -39,29 +45,37 @@
               <div>
                 <table class="style1">
                     <tr>
-                        <td>Organization Name:</td>
-                        <td>
+                        <td class="style1">Organization Name:</td>
+                        <td class="style1">
                             <asp:TextBox ID="TxtOrganizationName" runat="server"></asp:TextBox>
+                            <asp:CustomValidator ID="OrganizationValidator" runat="server" 
+                                ControlToValidate="TxtOrganizationName"></asp:CustomValidator>
                         </td>
                     </tr>
                     <tr>
                         <td>ID:</td>
                         <td>
-                            <asp:TextBox ID="TxtID" runat="server"
-                                 Textode="Password"></asp:TextBox>
+                            <asp:TextBox ID="TxtID" runat="server"></asp:TextBox>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+                                ControlToValidate="TxtID" Display="Dynamic" ErrorMessage="ID must be 9 numbers" 
+                                ValidationExpression="([0-9]{9})"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
                         <td>Verify ID:</td>
                         <td>
-                            <asp:TextBox ID="TxtVerifyID" runat="server"
-                                 TextMode="Password"></asp:TextBox>
+                            <asp:TextBox ID="TxtVerifyID" runat="server"></asp:TextBox>
+                            
+                            <asp:CompareValidator ID="IDCompareValidator" runat="server" 
+                                ControlToCompare="TxtID" ControlToValidate="TxtVerifyID" Display="Dynamic" 
+                                ErrorMessage="Verify ID must be the same as ID field"></asp:CompareValidator>
+                            
                         </td>
                     </tr>
         </table>
     </div>
-    <asp:Button ID="RegisterUser" runat="server" Text="Save User" 
-                             onclick="Button1_Click" />
+    <asp:Button ID="SignUpButton" runat="server" Text="Sign Up" 
+                             onclick="SignUp_Click" />
         </div>
         <div class="clear">
         </div>

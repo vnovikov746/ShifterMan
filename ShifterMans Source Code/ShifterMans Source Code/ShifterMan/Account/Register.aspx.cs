@@ -70,9 +70,9 @@ public partial class Account_Register : System.Web.UI.Page
         Response.Redirect(continueUrl);
     }
 
-    protected void Button1_Click(object sender, EventArgs e)
+    protected void SignUp_Click(object sender, EventArgs e)
     {
-        if (TxtID.Text == TxtVerifyID.Text)
+        if (Page.IsValid)
         {
             //call the method to execute insert to the database
             ExecuteInsert(TxtOrganizationName.Text, TxtID.Text);
@@ -82,9 +82,13 @@ public partial class Account_Register : System.Web.UI.Page
         }
         else
         {
+               //!!!!!!!!!!!!!!!NEED TO ADD VALIDATOR TO ORGANIZATION NAME!!!!!!!!!!!!!!!!!!!!//
+        }
+/*        else
+        {
             Response.Write("Password did not match");
             TxtID.Focus();
-        }
+        }*/
     }
 
     public static void ClearControls(Control Parent)
