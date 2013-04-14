@@ -30,6 +30,8 @@ __Project Stages__:
 
 - [SRS] (https://github.com/kakifish/ShifterMan/blob/master/Documents/ShifterMan_SRS.docx)
 
+- [SDS] (https://github.com/kakifish/ShifterMan/wiki/SDS-(Software-Design-Specifications))
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
