@@ -8,6 +8,6 @@
         About
     </h2>
     <p>
-        Put content here.
+        Written by the Shifterman Team of JCE, copyrighted accordingly.
     </p>
 </asp:Content>
