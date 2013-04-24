@@ -43,12 +43,17 @@
         </div>
         <div class="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+            
         </div>
         <div class="clear">
         </div>
     </div>
     <div class="footer">
+        <p>All rights reserved to the Shifterman team of JCE, under the github fair use license ©.</p>
         
+        <asp:HyperLink ID="HyperLink1" style="margin:5px;" Text="About" NavigateUrl="https://github.com/kakifish/ShifterMan/blob/master/README.md" runat="server"></asp:HyperLink> | 
+        <asp:HyperLink ID="HyperLink2" style="margin:5px;" Text="Documentation" NavigateUrl="https://github.com/kakifish/ShifterMan/tree/master/Documents" runat="server"></asp:HyperLink> | 
+        <asp:HyperLink ID="HyperLink3" style="margin:5px;" Text="GitHub Page" NavigateUrl="https://github.com/kakifish/ShifterMan" runat="server"></asp:HyperLink><p></p>
     </div>
     </form>
 </body>
