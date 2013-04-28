@@ -1,55 +1,35 @@
-﻿<%@ Page Title="Register" Language="C#" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="Account_Register" %>
+﻿<%@ Page Title="Register" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
+    CodeFile="Register.aspx.cs" Inherits="Account_Register" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server">
-    <title></title>
-    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+<asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
     <style type="text/css">
+
         .style1
         {
             height: 26px;
         }
+        .auto-style1 {
+            padding: 0px 12px;
+            margin: 12px 8px 8px 8px;
+            min-height: 420px;
+            width: 890px;
+            background-color: #F7F7F7;
+        }
     </style>
-</head>
-<body>
-    <form id="Form1" runat="server">
-    <div class="page">
-        <div class="header">
-            <div class="title">
-                <h1>
-                    Manager Registration Page</h1>
-            </div>
-            <div class="loginDisplay">
-                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
-                    <AnonymousTemplate>
-                        [ <a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Log In</a> ]
-                    </AnonymousTemplate>
-                    <LoggedInTemplate>
-                        Welcome <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
-                        [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/"/> ]
-                    </LoggedInTemplate>
-                </asp:LoginView>
-            </div>
-            <div class="clear hideSkiplink">
-                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
-                    <Items>
-                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
-                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
-                    </Items>
-                </asp:Menu>
-            </div>
-        </div>
-        <div class="main">
+    </asp:Content>
+<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
+    <h2>
+        Manager Registration
+    </h2>
+        <asp:Image ID="Image1" runat="server" ImageUrl="~/Pictures/shifterMan4.jpg" Height="221px" Width="243px" />
+        <div class="auto-style1">
               <div>
                 <table class="style1">
                     <tr>
                         <td class="style1">Organization Name:</td>
                         <td class="style1">
                             <asp:TextBox ID="TxtOrganizationName" runat="server"></asp:TextBox>
-                            <asp:CustomValidator ID="OrganizationValidator" runat="server" 
-                                ControlToValidate="TxtOrganizationName"></asp:CustomValidator>
+                            <asp:RequiredFieldValidator ID="OrganizationNameValidator" runat="server" ControlToValidate="TxtOrganizationName" ErrorMessage="Organization Name Required"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr>
@@ -79,10 +59,7 @@
         </div>
         <div class="clear">
         </div>
-    </div>
     <div class="footer">
         
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>

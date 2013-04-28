@@ -8,35 +8,29 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
 
-public partial class Account_Register : System.Web.UI.Page
+public partial class Workers_EmployeeInfo : System.Web.UI.Page
 {
     private string getConnectionString()
     {
         //sets the connection string from your web config file "ConnString" is the name of your Connection String
         return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
     }
-
     protected void Page_Load(object sender, EventArgs e)
     {
 
     }
-
-    private void ExecuteInsert(string organization_name, string id)
+    private void Insert_Info(string firstName, string lastName, string password, string eMail, string ID)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "INSERT INTO Organization (Org_Name, Wor_ID) VALUES ('" + organization_name + "','" + id + "')";
-        string sql2 = "INSERT INTO Worker (Org_Name, Wor_ID, Wor_Type) VALUES ('" + organization_name + "','" + id + "','Manager')";
+        string sql = "UPDATE Worker SET Wor_FirstName = '" + firstName + "', Wor_LastName = '" + lastName + "', Wor_Password = '" + password + "', Wor_Email = '" + eMail + "' WHERE Wor_ID = '" + ID + "'";
 
         try
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand(sql, conn);
-            SqlCommand cmd2 = new SqlCommand(sql2, conn);
 
             cmd.CommandType = CommandType.Text;
             cmd.ExecuteNonQuery();
-            cmd2.CommandType = CommandType.Text;
-            cmd2.ExecuteNonQuery();
         }
         catch (System.Data.SqlClient.SqlException ex)
         {
@@ -50,11 +44,10 @@ public partial class Account_Register : System.Web.UI.Page
         }
     }
 
-    protected void SignUp_Click(object sender, EventArgs e)
+    protected void infoFinish_Click(object sender, EventArgs e)
     {
-        ExecuteInsert(TxtOrganizationName.Text, TxtID.Text);
-        Response.Write("Record was successfully added!");
-        FormsAuthentication.SetAuthCookie(TxtID.Text, false /* createPersistentCookie */);
-        Response.Redirect("~/Workers/ManagerInfo.aspx");
+        String ID = System.Web.HttpContext.Current.User.Identity.Name;
+        Insert_Info(FirstName.Text, LastName.Text, Password.Text, Email.Text, ID);
+        Response.Redirect("~/Workers/Employee.aspx");
     }
 }

@@ -8,6 +8,6 @@
         About
     </h2>
     <p>
-        Written by the Shifterman Team of JCE, copyrighted accordingly.
+        <asp:Image ID="Image1" runat="server" ImageUrl="~/Pictures/shifterMan5.jpg" />
     </p>
 </asp:Content>

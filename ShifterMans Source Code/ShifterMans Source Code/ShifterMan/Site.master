@@ -1,6 +1,14 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<script runat="server">
+
+    protected void NavigationMenu_MenuItemClick(object sender, MenuEventArgs e)
+    {
+
+    }
+</script>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head runat="server">
     <title></title>
@@ -12,9 +20,9 @@
     <form runat="server">
     <div class="page">
         <div class="header">
-            <div class="title">
+            <div class="title" style="color: #ffffff">
                 <h1>
-                    Welcome to shifterman official site
+                     SHIFTERMAN
                 </h1>
             </div>
             <div class="loginDisplay">
@@ -26,34 +34,27 @@
                     <LoggedInTemplate>
                         Welcome <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
                         [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/"/> ]
-                        [ <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Account/ChangePassword.aspx">Change Password</asp:HyperLink> ]
                     </LoggedInTemplate>
                 </asp:LoginView>
             </div>
             <div class="clear hideSkiplink">
-                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal" OnMenuItemClick="NavigationMenu_MenuItemClick">
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
-                        <asp:MenuItem NavigateUrl="~/Workers/Manager.aspx" Text="Manager"/>
-                        <asp:MenuItem NavigateUrl="~/Workers/Employee.aspx" Text="Employee"/>
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
                     </Items>
                 </asp:Menu>
             </div>
         </div>
         <div class="main">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
-            
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                <asp:Image ID="Image1" runat="server" />
+            </asp:ContentPlaceHolder>
         </div>
-        <div class="clear">
-        </div>
+
     </div>
     <div class="footer">
-        <p>All rights reserved to the Shifterman team of JCE, under the github fair use license ©.</p>
         
-        <asp:HyperLink ID="HyperLink1" style="margin:5px;" Text="About" NavigateUrl="https://github.com/kakifish/ShifterMan/blob/master/README.md" runat="server"></asp:HyperLink> | 
-        <asp:HyperLink ID="HyperLink2" style="margin:5px;" Text="Documentation" NavigateUrl="https://github.com/kakifish/ShifterMan/tree/master/Documents" runat="server"></asp:HyperLink> | 
-        <asp:HyperLink ID="HyperLink3" style="margin:5px;" Text="GitHub Page" NavigateUrl="https://github.com/kakifish/ShifterMan" runat="server"></asp:HyperLink><p></p>
     </div>
     </form>
 </body>

@@ -1,24 +1,21 @@
 ﻿/* DEFAULTS
 ----------------------------------------------------------*/
 
-body   
-{
-    background: #b6b7bc;
+body {
+    background: #3783b5;
     font-size: .80em;
-    font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+    font-family: 'Trebuchet MS' , 'Lucida Sans Unicode' , 'Lucida Grande' , 'Lucida Sans' , Arial, sans-serif;
     margin: 0px;
     padding: 0px;
-    color: #696969;
+    color: #000000;
 }
 
-a:link, a:visited
-{
+a:link, a:visited {
     color: #034af3;
 }
 
-a:hover
-{
-    color: #1d60ff;
+a:hover {
+    color:#1d60ff ;
     text-decoration: none;
 }
 
@@ -37,37 +34,44 @@ p
 /* HEADINGS   
 ----------------------------------------------------------*/
 
-h1, h2, h3, h4, h5, h6
-{
+h1, h2, h3, h4, h5, h6 {
     font-size: 1.5em;
-    color: #666666;
+    color: #000000;
     font-variant: small-caps;
     text-transform: none;
     font-weight: 200;
     margin-bottom: 0px;
+    text-align: center;
+    width: 100%;
 }
 
-h1
-{
+h1 {
     font-size: 1.6em;
     padding-bottom: 0px;
     margin-bottom: 0px;
-}
-
-h2
-{
-    font-size: 1.5em;
+    width: 100%;
+    text-align: center;
+    font-size: xx-large;
     font-weight: 600;
+    color: #000000;
 }
 
-h3
-{
+h2 {
+    font-size: xx-large;
+    font-weight: 600;
+    text-align: center;
+    color: #CE0201;
+}
+
+h3 {
     font-size: 1.2em;
+    
 }
 
 h4
 {
     font-size: 1.1em;
+    
 }
 
 h5, h6
@@ -94,31 +98,34 @@ first child of the left and right table columns */
     border: 1px solid #496077;
 }
 
-.header
-{
+.header {
     position: relative;
     margin: 0px;
     padding: 0px;
-    background: #4b6c9e;
+    background: #1A748F;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+.header h1 {
+    font-weight: 600;
+    margin: 0px;
+    padding: 0px 0px 0px 0px;
+    color: #F9F810;
+    border: none;
+    line-height: 2em;
+    font-size: xx-large;
+    text-align: center;
     width: 100%;
 }
 
-.header h1
-{
-    font-weight: 700;
-    margin: 0px;
-    padding: 0px 0px 0px 20px;
-    color: #f9f9f9;
-    border: none;
-    line-height: 2em;
-    font-size: 2em;
-}
-
-.main
-{
+.main {
     padding: 0px 12px;
     margin: 12px 8px 8px 8px;
     min-height: 420px;
+    width: 926px;
+    background-color: #F7F7F7;
 }
 
 .leftCol
@@ -142,48 +149,46 @@ first child of the left and right table columns */
 /* TAB MENU   
 ----------------------------------------------------------*/
 
-div.hideSkiplink
-{
-    background-color:#3a4f63;
-    width:100%;
+div.hideSkiplink {
+    background-color: #F9F810;
+    width: 100%;
 }
 
 div.menu
 {
     padding: 4px 0px 4px 8px;
+
 }
 
-div.menu ul
-{
+div.menu ul {
     list-style: none;
     margin: 0px;
     padding: 0px;
     width: auto;
+    color: #CC00CC;
 }
 
-div.menu ul li a, div.menu ul li a:visited
-{
-    background-color: #465c71;
-    border: 1px #4e667d solid;
+div.menu ul li a, div.menu ul li a:visited {
+    background-color: #ff5e70;
+    border: 1px #ff5e70 solid;
     color: #dde4ec;
     display: block;
     line-height: 1.35em;
     padding: 4px 20px;
-    text-decoration: none;
     white-space: nowrap;
 }
 
 div.menu ul li a:hover
 {
-    background-color: #bfcbd6;
-    color: #465c71;
+    background-color: #CE0201;
+    color: #ffffff;
     text-decoration: none;
 }
 
 div.menu ul li a:active
 {
-    background-color: #465c71;
-    color: #cfdbe6;
+    background-color: #CE0201;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -239,17 +244,18 @@ div.accountInfo
 /* MISC  
 ----------------------------------------------------------*/
 
-.clear
-{
+.clear {
     clear: both;
+    text-align: center;
 }
 
-.title
-{
+.title {
+    padding: 0px;
     display: block;
+    text-align: center;
+    width: 100%;
     float: left;
-    text-align: left;
-    width: auto;
+    background-color: #1a748f;
 }
 
 .loginDisplay
@@ -282,8 +288,7 @@ div.accountInfo
     color: Red;
 }
 
-.bold
-{
+.bold {
     font-weight: bold;
 }
 

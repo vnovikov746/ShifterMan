@@ -1,24 +1,50 @@
-﻿<%@ Page Title="Manager Page" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
-    CodeFile="Manager.aspx.cs" Inherits="Workers_Manager" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Manager.aspx.cs" Inherits="Workers_Manager" %>
 
-<asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
-</asp:Content>
-<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
-    <h2>
-        Manager Page
-    </h2>
-    <br /> 
-    
-    <div style="margin-left: 20px;">
-        <asp:Label ID="LabelRows" Text="Rows (Shifts):" style="text-align: right;" Width="80px" runat="server"></asp:Label> <asp:TextBox style="margin-left: 5px" ID="txtRows" runat="server" Width="40px"> </asp:TextBox> <br />
-        <asp:Label ID="LableCols" Text="Cols (Days):" style="text-align: right;" Width="80px" runat="server"></asp:Label> <asp:TextBox style="margin-left: 5px" ID="txtCols" runat="server" Width="40px"></asp:TextBox>
-        <br />
-        <br />
-        <asp:Button ID="btnGenerate" OnClick="btnGenerate_Click" runat="server" Text="Generate" />&nbsp;<br /> <br />
-        <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
-        <br />
-        <br />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="Form1" runat="server">
+    <div class="page">
+        <div class="header">
+            <div class="title">
+                <h1>
+                    Organization Manager Page</h1>
+            </div>
+            <div class="loginDisplay">
+                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                    <AnonymousTemplate>
+                        [ <a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Log In</a> ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Welcome <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
+                        [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/"/> ]
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
+                        <asp:MenuItem NavigateUrl="~/Workers/ManagerInfo.aspx" Text="Change Information" Value="Change Information"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/Workers/WorkersIDs.aspx" Text="Add Workers" Value="Add Workers"></asp:MenuItem>
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="main">
+        </div>
+        <div class="clear">
+        </div>
     </div>
-    <asp:Button ID="btnPost" runat="server" OnClick="btnPost_Click" Text="Cause Postback" />
- 
-</asp:Content>
+    <div class="footer">
+        
+    </div>
+    </form>
+</body>
+</html>

@@ -2,111 +2,72 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
-using System.Configuration;
 using System.Data;
 
 public partial class Account_Login : System.Web.UI.Page
 {
-    SqlConnection myconcection;
+    private string getConnectionString()
+    {
+        //sets the connection string from your web config file "ConnString" is the name of your Connection String
+        return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        RegisterHyperLink.NavigateUrl = "Register.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-        getConnection();
+
     }
 
-    private void getConnection()
+    private void VerifyUser(string organization_name, string id)
     {
-        String connstring = "Data Source=KAKIFISH;Initial Catalog=ShifterMan;Integrated Security=True";//your connection string
-        SqlConnection myconcection = new SqlConnection(connstring);
-    }
-
-    // method to get data
-    public DataSet getData(String sql)
-    {
-        getConnection();
-        SqlDataAdapter adptre = new SqlDataAdapter();
-        DataSet resultSet = new DataSet();
-        SqlCommand sqlcmd = new SqlCommand(sql, myconcection);
-        adptre.SelectCommand = sqlcmd;
-        myconcection.Open();
+        SqlConnection conn = new SqlConnection(getConnectionString());
         try
         {
-            adptre.Fill(resultSet);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT Wor_Type FROM Worker WHERE Org_Name = '" + organization_name + "' AND Wor_ID = '" + id + "'", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            DataTable dataTable = new DataTable();
+            dataTable.Load(reader);
+            int rowCount = dataTable.Rows.Count;
+            if (rowCount != 0)
+            {
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                String type = Convert.ToString(reader[0]);
+                type = type.Trim();
+
+                FormsAuthentication.SetAuthCookie(id, false /* createPersistentCookie */);
+
+                Response.Redirect("~/Workers/" + type + ".aspx");
+            }
+            else
+            {
+                Try_Again();
+            }
         }
-        catch (Exception ex)
+        catch (System.Data.SqlClient.SqlException ex)
         {
-            throw ex;
+            string msg = "Validation Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
         }
-        myconcection.Close();
-        return resultSet;
+        finally
+        {
+            conn.Close();
+        }
     }
-    // method to add data
-    public void setData(string sqlcmd)
+
+    protected void Try_Again()
     {
-        getConnection();
-        myconcection.Open();
-        string sqlcommand = sqlcmd;
-        SqlCommand cmd = new SqlCommand(sqlcommand, myconcection);
-        cmd.ExecuteNonQuery();
-        myconcection.Close();
+        NoUserLiteral.Visible = true;
+        TxtID1.Text = "";
     }
 
     protected void LoginButton_Click(object sender, EventArgs e)
     {
-        string userName = LoginUser.UserName;
-        string password = LoginUser.Password;
-
-        bool result = UserLogin(userName, password);
-        if ((result))
-        {
-        }
-        else
-        {
-        }
-/*        // if there is no returnUrl in the query string , we redirect based on user role
-        if (string.IsNullOrEmpty(Request.QueryString["ReturnUrl"]))
-        {
-            // please don't use User.IsInRole here , because it will not be populated yet at this stage.
-            if (Roles.IsUserInRole(Login1.UserName, "Admins"))
-                Response.Redirect("~/Admins/Default.aspx");
-            else if (Roles.IsUserInRole(Login1.UserName, "Editors"))
-                Response.Redirect("~/Editors/Default.aspx");
-        }*/
-    }
-
-    private bool UserLogin(string userName, string password)
-    {
-
-        // read the coonection string from web.config 
-//        string conString = ConfigurationManager.ConnectionStrings["Data Source=KAKIFISH;Initial Catalog=ShifterMan;Integrated Security=TrueingName"].ConnectionString;
-
-        using (myconcection)
-        {
-            //' declare the command that will be used to execute the select statement 
-            SqlCommand com = new SqlCommand("SELECT Wor_UserName FROM Worker WHERE Wor_Name = @UserName AND Wor_Password = @Password", myconcection);
-
-            // set the username and password parameters
-            com.Parameters.Add("@UserName", SqlDbType.NVarChar).Value = userName;
-            com.Parameters.Add("@Password", SqlDbType.NVarChar).Value = password;
-
-//            myconcection.Open();
-            //' execute the select statment 
-//            string result = Convert.ToString(com.ExecuteScalar());
-            //' check the result 
-//            if (string.IsNullOrEmpty(result))
-//            {
-                //invalid user/password , return flase 
- //               return false;
-   //         }
-     //       else
-       //     {
-                // valid login
-                return true;
-           // }
-        }
+        VerifyUser(OrgNameList.Text, TxtID1.Text);
     }
 }
