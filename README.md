@@ -51,21 +51,32 @@ This is in distinction to permissive free software licenses, of which the BSD li
 
 * In the [Source Code Directory] (https://github.com/kakifish/ShifterMan/tree/master/ShifterMans%20Source%20Code/ShifterMans%20Source%20Code/ShifterMan) you will find the directories and files:
 Files:
+
 1) Web.config: This file includes the connection string of the Database and more crucial informaation in order to the web site to work. Do not make changes in this file.
+
 2) Site.Master: This file is the mane tamplate to all other pages in the project.
+
 3) Default.aspx and Default.aspx.cs: The GUI and Logic of the landing page.
+
 4) About.aspx and About.aspx.cs: The GUI and logic of the page that will include an explanation about our project and team.
 
 * Account Directory:
 Files:
+
 1) Login.aspx and Login.aspx.cs: The GUI and logic of the login Form.
+
 2) Register.aspx and Register.aspx.cs: The GUI and logic of the registration page.
 
 * Workers Directiry:
+
 1) ManagerInfo.aspx and ManagerInfo.aspx.cs: The GUI and logic of the Manger information page.
+
 2) EmployeeInfo.aspx and EmployeeInfo.aspx.cs: The GUI and logic of the Employee information page.
+
 3) WorkersIDs.aspx and WorkersIDs.aspx,cs: The GUI and logic of the page where the manager adds the IDs of his employees.
+
 4) Manager.aspx and Manager.aspx.cs: The GUI and logic of the main page of the manager.
+
 5) Employee.aspx and Employee.aspx.cs: The GUI and logic of the main page of the Employee.
 
 * Styles: The Directory for the css files.
