@@ -35,11 +35,24 @@ __Project Stages__:
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
+The source code is available in our ShifterMan Source Code directory in this repository: 
+[https://github.com/kakifish/ShifterMan/tree/master/ShifterMans%20Source%20Code/ShifterMans%20Source%20Code] (https://github.com/kakifish/ShifterMan/tree/master/ShifterMans%20Source%20Code/ShifterMans%20Source%20Code).
 
-The source code will be available in the project page in the repository.
+### For the better understanding of the source code:
+The code will be documented with comment in each and every source code file.
+Also we will make big effort to write comments for the methods we write.
 
-For the better understanding of the source code:
-The code will be documented and explanations about the code would be also available in our wiki page.
+### Project License
+Our project license will be GNU GPL-General Public License, The GPL is the first copyleft license for general use, which means that derived works can only be distributed under the same license terms.
+Under this philosophy, the GPL grants the recipients of a computer program the rights of the free software definition and uses copyleft to ensure the freedoms are preserved, even when the work is changed or added to.
+This is in distinction to permissive free software licenses, of which the BSD licenses are the standard examples.
+
+### Information about a directory structure and files?
+In the [Source Code Directory] (https://github.com/kakifish/ShifterMan/tree/master/ShifterMans%20Source%20Code/ShifterMans%20Source%20Code/ShifterMan) you will find the directories and files:
+Files:
+Web.config: this file includes the connection string of the Database and more crucial informaation in order to the web site to work. Do not make changes in this file.
+
+
 
 ### Project design:
 We will divide folders building into three layers:
