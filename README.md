@@ -32,6 +32,8 @@ __Project Stages__:
 
 - [SDS] (https://github.com/kakifish/ShifterMan/wiki/Software-Design-Specifications)
 
+- [ZFR] (https://github.com/kakifish/ShifterMan/wiki/Iteration-0---ZFR)
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
