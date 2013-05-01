@@ -25,7 +25,7 @@ public partial class Workers_ManagerInfo : System.Web.UI.Page
     private void Insert_Info(string firstName, string lastName, string password, string eMail, string ID)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "UPDATE Worker SET Wor_FirstName = '"+firstName+"', Wor_LastName = '"+lastName+"', Wor_Password = '"+password+"', Wor_Email = '"+ eMail + "' WHERE Wor_ID = '"+ID+"'";
+        string sql = "UPDATE Worker SET [First Name] = '"+firstName+"', [Last Name] = '"+lastName+"', Password = '"+password+"', Email = '"+ eMail + "' WHERE ID = '"+ID+"'";
 
         try
         {

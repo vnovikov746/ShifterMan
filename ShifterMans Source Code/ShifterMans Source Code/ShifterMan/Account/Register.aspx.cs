@@ -24,19 +24,15 @@ public partial class Account_Register : System.Web.UI.Page
     private void ExecuteInsert(string organization_name, string id)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "INSERT INTO Organization (Org_Name, Wor_ID) VALUES ('" + organization_name + "','" + id + "')";
-        string sql2 = "INSERT INTO Worker (Org_Name, Wor_ID, Wor_Type) VALUES ('" + organization_name + "','" + id + "','Manager')";
+        string sql = "INSERT INTO Worker ([Organization Name], ID, Type) VALUES ('" + organization_name + "','" + id + "','Manager')";
 
         try
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand(sql, conn);
-            SqlCommand cmd2 = new SqlCommand(sql2, conn);
 
             cmd.CommandType = CommandType.Text;
             cmd.ExecuteNonQuery();
-            cmd2.CommandType = CommandType.Text;
-            cmd2.ExecuteNonQuery();
         }
         catch (System.Data.SqlClient.SqlException ex)
         {
@@ -54,7 +50,34 @@ public partial class Account_Register : System.Web.UI.Page
     {
         ExecuteInsert(TxtOrganizationName.Text, TxtID.Text);
         Response.Write("Record was successfully added!");
-        FormsAuthentication.SetAuthCookie(TxtID.Text, false /* createPersistentCookie */);
+
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        try
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT Type FROM Worker WHERE [Organization Name] = '" + TxtOrganizationName.Text.Trim() + "' AND ID = '" + TxtID.Text.Trim() + "'", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            DataTable dataTable = new DataTable();
+            dataTable.Load(reader);
+            int rowCount = dataTable.Rows.Count;
+            reader = cmd.ExecuteReader();
+            reader.Read();
+            String type = Convert.ToString(reader[0]);
+            type = type.Trim();
+
+            FormsAuthentication.SetAuthCookie(type + ": " + TxtID.Text.Trim(), false /* createPersistentCookie */);
+        }
+        catch (System.Data.SqlClient.SqlException ex)
+        {
+            string msg = "Validation Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
+        }
+        finally
+        {
+            conn.Close();
+        }
+
         Response.Redirect("~/Workers/ManagerInfo.aspx");
     }
 }

@@ -2,6 +2,29 @@
     CodeFile="WorkersIDs.aspx.cs" Inherits="Workers_WorkersIDs" %>
 
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
+    <style type="text/css">
+        .auto-style1 {
+            width: 168px;
+        }
+        .auto-style2 {
+            width: 126px;
+        }
+        .auto-style4 {
+            margin-left: 1px;
+        }
+        .auto-style6 {
+            margin-left: 0px;
+        }
+        .auto-style8 {
+            width: 246px;
+        }
+        .auto-style9 {
+            width: 283px;
+        }
+        .auto-style10 {
+            width: 245px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
     <h2>Workers
@@ -13,13 +36,13 @@
                   </asp:DropDownList>
                   <br />
                   <br />
-                  Your Workers:<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" DataSourceID="WorInfo" AllowSorting="True">
+                  Your Workers:<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" DataSourceID="WorInfo" AllowSorting="True" Width="923px">
                       <Columns>
-                          <asp:BoundField DataField="Wor_ID" HeaderText="Wor_ID" SortExpression="Wor_ID" />
-                          <asp:BoundField DataField="Wor_FirstName" HeaderText="Wor_FirstName" SortExpression="Wor_FirstName" />
-                          <asp:BoundField DataField="Wor_LastName" HeaderText="Wor_LastName" SortExpression="Wor_LastName" />
-                          <asp:BoundField DataField="Wor_Email" HeaderText="Wor_Email" SortExpression="Wor_Email" />
-                          <asp:BoundField DataField="Wor_Type" HeaderText="Wor_Type" SortExpression="Wor_Type" />
+                          <asp:BoundField DataField="Type" HeaderText="Type" SortExpression="Type" />
+                          <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" />
+                          <asp:BoundField DataField="First_Name" HeaderText="First Name" SortExpression="First_Name" />
+                          <asp:BoundField DataField="Last_Name" HeaderText="Last Name" SortExpression="Last_Name" />
+                          <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
                       </Columns>
                       <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
                       <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
@@ -31,24 +54,41 @@
                       <SortedDescendingCellStyle BackColor="#F1E5CE" />
                       <SortedDescendingHeaderStyle BackColor="#93451F" />
                   </asp:GridView>
-                  <asp:SqlDataSource ID="WorInfo" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT [Wor_ID], [Wor_FirstName], [Wor_LastName], [Wor_Email], [Wor_Type] FROM [Worker] WHERE ([Org_Name] = @Org_Name)">
+                  <asp:SqlDataSource ID="WorInfo" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT [Type], [ID], [First Name] AS First_Name, [Last Name] AS Last_Name, [Email] FROM [Worker] WHERE ([Organization Name] = @Organization_Name)">
                       <SelectParameters>
-                          <asp:ControlParameter ControlID="OrgNameList" Name="Org_Name" PropertyName="SelectedValue" Type="String" />
+                          <asp:ControlParameter ControlID="OrgNameList" Name="Organization_Name" PropertyName="SelectedValue" Type="String" />
                       </SelectParameters>
                   </asp:SqlDataSource>
                   <br />
                   <br />
-                  <br />
-                  <asp:Label ID="WorkerIDLabel" runat="server" Text="Worker ID"></asp:Label>
-                  <asp:TextBox ID="WorkerIDTxt" runat="server"></asp:TextBox>
-                  <br />
-                  Worker Type <asp:DropDownList ID="WorTypeList" runat="server">
-                      <asp:ListItem Selected="True">Employee</asp:ListItem>
-                      <asp:ListItem>Manager</asp:ListItem>
-                  </asp:DropDownList>
-                  <br />
-                  <asp:Button ID="AddWorkerButton" runat="server" OnClick="AddWorkerButton_Click" Text="Add Worker" />
-                  <asp:Button ID="DoneButton" runat="server" OnClick="DoneButton_Click" Text="DONE" />
+                  <table>
+                      <tr>
+                          <td class="auto-style10"><asp:Label ID="WorkerIDLabel" runat="server" Text="Worker ID"></asp:Label></td>
+                          <td><asp:TextBox ID="WorkerIDTxt" runat="server" Width="275px" CssClass="auto-style4"></asp:TextBox></td>
+                      </tr>
+                  </table>
+                   <table>
+                      <tr>
+                           <td class="auto-style8"><asp:Label ID="Label1" runat="server" Text="Worker Type"></asp:Label></td>
+                           <td class="auto-style9"><asp:DropDownList ID="WorTypeList" runat="server" Width="283px" CssClass="auto-style6">
+                                <asp:ListItem Selected="True">Employee</asp:ListItem>
+                                <asp:ListItem>Manager</asp:ListItem>
+                                </asp:DropDownList></td>
+                          </tr>
+                       </table>
+                           <br/>
+                           <br/>
+                           <br/>
+                       <table>
+                           <tr>
+                            <td class="auto-style1"><asp:Button ID="AddWorkerButton" runat="server" OnClick="AddWorkerButton_Click" Text="Add Worker" Width="172px" /></td>
+                              <td>
+                                <asp:Button ID="RemoveWorButton" runat="server" OnClick="RemoveWorButton_Click" Text="Remove Worker" Width="197px" />
+                              </td>                             
+                               <td class="auto-style2"><asp:Button ID="DoneButton" runat="server" OnClick="DoneButton_Click" Text="DONE" Width="157px" /></td>
+                            </tr>
+                       </table>
+                  
         </div>
     </div>
 </asp:Content>

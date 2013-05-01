@@ -32,11 +32,53 @@
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
                         <asp:MenuItem NavigateUrl="~/Workers/EmployeeInfo.aspx" Text="Change Info" Value="Change Info"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/Scheduler/ShiftOptions.aspx" Text="Give Shift Options" Value="Give Shift Options"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/Scheduler/ScheduleHistory.aspx" Text="Schedule History" Value="Schedule History"></asp:MenuItem>
                     </Items>
                 </asp:Menu>
             </div>
         </div>
         <div class="main">
+                        <div>
+                  Your Company:
+                  <asp:DropDownList ID="OrgNameList3" runat="server">
+                  </asp:DropDownList>
+            </div>
+            <div>
+                <h2>
+                    Weekly Schedule</h2>
+            </div>
+            <div>
+                <asp:GridView ID="WeeklyScheduleGrid" runat="server" AutoGenerateColumns="False" Width="929px">
+                    <Columns>
+                        <asp:BoundField DataField="HourDay" HeaderText="Hour/Day">
+                        <ItemStyle BackColor="#FF66FF" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Sunday" HeaderText="Sunday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Monday" HeaderText="Monday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Tusday" HeaderText="Tusday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Wednsday" HeaderText="Wednsday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Thursday" HeaderText="Thursday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Friday" HeaderText="Friday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="Saturday" HeaderText="Saturday">
+                        <HeaderStyle BackColor="#FF66CC" />
+                        </asp:BoundField>
+                    </Columns>
+                </asp:GridView>
+            </div>
+
         </div>
         <div class="clear">
         </div>

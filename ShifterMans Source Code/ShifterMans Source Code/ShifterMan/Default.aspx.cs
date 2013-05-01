@@ -22,29 +22,8 @@ public partial class _Default : System.Web.UI.Page
      
         if (isLogged)
         {
-            String ID = System.Web.HttpContext.Current.User.Identity.Name;
-            SqlConnection conn = new SqlConnection(getConnectionString());
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT Wor_Type FROM Worker WHERE Wor_ID = '" + ID + "'", conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-                String type = Convert.ToString(reader[0]);
-                type = type.Trim();
-
-                Response.Redirect("~/Workers/" + type + ".aspx");
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                string msg = "Validation Error:";
-                msg += ex.Message;
-                throw new Exception(msg);
-            }
-            finally
-            {
-                conn.Close();
-            }
+            string type = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Replace(':',' ').Trim();
+            Response.Redirect("~/Workers/" + type + ".aspx");
         }
     }
 }

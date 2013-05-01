@@ -8,16 +8,9 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
-public partial class Workers_WorkersIDs : System.Web.UI.Page
+public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
 {
-
     string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[1].Trim();
-
-    private string getConnectionString()
-    {
-        //sets the connection string from your web config file "ConnString" is the name of your Connection String
-        return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
-    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -33,9 +26,9 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
             while (myReader.Read())
             {
                 string OrgName = myReader.GetSqlString(0).Value;
-                if (!OrgNameList.Items.Contains(new ListItem(OrgName)))
+                if (!OrgNameList2.Items.Contains(new ListItem(OrgName)))
                 {
-                    OrgNameList.Items.Add(new ListItem(OrgName));
+                    OrgNameList2.Items.Add(new ListItem(OrgName));
                 }
             }
         }
@@ -51,10 +44,22 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
         }
     }
 
-    private void Insert_Info(string organization_name, string Type, string ID)
+    private string getConnectionString()
+    {
+        //sets the connection string from your web config file "ConnString" is the name of your Connection String
+        return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
+    }
+
+    protected void AddShiftButton_Click(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "INSERT INTO Worker ([Organization Name], ID, Type) VALUES ('" + organization_name + "','" + ID + "','" + Type +"')";
+        string day = DayDropDown.Text.Trim();
+        string begin = BeginHourDropDown.Text.Trim() + ":" + BeginMinDropDown.Text.Trim();
+        string end = EndHourDropDown.Text.Trim() + ":" + EndMinDropDown.Text.Trim();
+        string info = ShiftNameTxt.Text.Trim();
+        string org_name = OrgNameList2.Text.Trim();
+
+        string sql = "INSERT INTO [Shift Schedule] ([Organization Name], Day, [Begin Time], [End Time], [Shift Info]) VALUES ('" + org_name + "','" + day + "','" + begin + "','" + end + "','" + info + "')";
 
         try
         {
@@ -73,23 +78,18 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
         finally
         {
             conn.Close();
+            Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
         }
     }
-    
-    protected void AddWorkerButton_Click(object sender, EventArgs e)
-    {
-        Insert_Info(OrgNameList.Text, WorTypeList.Text, WorkerIDTxt.Text);
-        Response.Redirect("~/Workers/WorkersIDs.aspx");
-    }
-    protected void DoneButton_Click(object sender, EventArgs e)
-    {
-        Response.Redirect("~/Workers/Manager.aspx");
-    }
-
-    protected void RemoveWorButton_Click(object sender, EventArgs e)
+    protected void RemoveShiftButton_Click(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "DELETE FROM Worker WHERE ID = '" + WorkerIDTxt.Text.Trim() + "'";
+        string day = DayDropDown.Text.Trim();
+        string begin = BeginHourDropDown.Text.Trim() + ":" + BeginMinDropDown.Text.Trim();
+        string end = EndHourDropDown.Text.Trim() + ":" + EndMinDropDown.Text.Trim();
+        string info = ShiftNameTxt.Text.Trim();
+
+        string sql = "DELETE FROM [Shift Schedule] WHERE Day =  '" + day + "' AND [Begin Time] =  '" + begin + "' AND [End Time] = '" + end + "'";
 
         try
         {
@@ -108,7 +108,8 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
         finally
         {
             conn.Close();
-            Response.Redirect("~/Workers/WorkersIDs.aspx");
+            Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
         }
+
     }
 }

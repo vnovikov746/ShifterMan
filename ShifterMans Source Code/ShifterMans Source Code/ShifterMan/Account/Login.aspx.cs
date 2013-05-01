@@ -27,7 +27,7 @@ public partial class Account_Login : System.Web.UI.Page
         try
         {
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT Wor_Type FROM Worker WHERE Org_Name = '" + organization_name + "' AND Wor_ID = '" + id + "'", conn);
+            SqlCommand cmd = new SqlCommand("SELECT Type FROM Worker WHERE [Organization Name] = '" + organization_name + "' AND ID = '" + id + "'", conn);
             SqlDataReader reader = cmd.ExecuteReader();
             DataTable dataTable = new DataTable();
             dataTable.Load(reader);
@@ -39,7 +39,7 @@ public partial class Account_Login : System.Web.UI.Page
                 String type = Convert.ToString(reader[0]);
                 type = type.Trim();
 
-                FormsAuthentication.SetAuthCookie(id, false /* createPersistentCookie */);
+                FormsAuthentication.SetAuthCookie(type + ": " + id , false /* createPersistentCookie */);
 
                 Response.Redirect("~/Workers/" + type + ".aspx");
             }
