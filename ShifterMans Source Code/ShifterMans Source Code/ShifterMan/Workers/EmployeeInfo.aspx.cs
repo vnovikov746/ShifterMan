@@ -10,6 +10,8 @@ using System.Data;
 
 public partial class Workers_EmployeeInfo : System.Web.UI.Page
 {
+    private bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+
     private string getConnectionString()
     {
         //sets the connection string from your web config file "ConnString" is the name of your Connection String
@@ -17,12 +19,52 @@ public partial class Workers_EmployeeInfo : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!isLogged)
+        {
+            Response.Redirect("~/Account/Login.aspx");
+        }
+        else
+        {
+            string Company = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            string EmployeeID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
 
+            SqlConnection conn = new SqlConnection(getConnectionString());
+            string sql = "SELECT flagInfo FROM Worker WHERE ID = '" + EmployeeID + "' AND Type = 'Employee' AND [Organization Name] = '" + Company + "'";
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader myReader = cmd.ExecuteReader();
+                myReader.Read();
+                string flagIn = Convert.ToString(myReader[0]).Trim();
+                if (flagIn.Equals("0"))
+                {
+                    CancelEditingButton.Visible = false;
+                }
+                else
+                {
+                    CancelEditingButton.Visible = true;
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                string msg = "Insert Error:";
+                msg += ex.Message;
+                throw new Exception(msg);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+        }
     }
     private void Insert_Info(string firstName, string lastName, string password, string eMail, string ID)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "UPDATE Worker SET [First Name] = '" + firstName + "', [Last Name] = '" + lastName + "', Password = '" + password + "', Email = '" + eMail + "' WHERE ID = '" + ID + "'";
+        string sql = "UPDATE Worker SET [First Name] = '" + firstName + "', [Last Name] = '" + lastName + "', Password = '" + password + "', Email = '" + eMail + "', flagInfo = '1' WHERE ID = '" + ID + "' AND Type = 'Employee'";
 
         try
         {
@@ -46,8 +88,13 @@ public partial class Workers_EmployeeInfo : System.Web.UI.Page
 
     protected void infoFinish_Click(object sender, EventArgs e)
     {
-        String ID = System.Web.HttpContext.Current.User.Identity.Name;
-        Insert_Info(FirstName.Text, LastName.Text, Password.Text, Email.Text, ID);
+        string EmployeeID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
+        Insert_Info(FirstName.Text, LastName.Text, Password.Text, Email.Text, EmployeeID);
+        Response.Redirect("~/Workers/Employee.aspx");
+    }
+
+    protected void CancelEditingButton_Click(object sender, EventArgs e)
+    {
         Response.Redirect("~/Workers/Employee.aspx");
     }
 }

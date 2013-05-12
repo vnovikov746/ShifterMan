@@ -56,6 +56,8 @@
     </div>
     <asp:Button ID="SignUpButton" runat="server" Text="Sign Up" 
                              onclick="SignUp_Click" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <asp:Label ID="orgExistLabel" runat="server" Text="Organization Already Exists" Visible="False"></asp:Label>
         </div>
         <div class="clear">
         </div>

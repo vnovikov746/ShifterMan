@@ -10,37 +10,46 @@ using System.Data;
 
 public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
 {
-    string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[1].Trim();
+    bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
-
-        try
+        if (isLogged)
         {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand(sql, conn);
+            string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
+            SqlConnection conn = new SqlConnection(getConnectionString());
+            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
 
-            SqlDataReader myReader = cmd.ExecuteReader();
-            while (myReader.Read())
+            try
             {
-                string OrgName = myReader.GetSqlString(0).Value;
-                if (!OrgNameList2.Items.Contains(new ListItem(OrgName)))
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader myReader = cmd.ExecuteReader();
+                while (myReader.Read())
                 {
-                    OrgNameList2.Items.Add(new ListItem(OrgName));
+                    string OrgName = myReader.GetSqlString(0).Value;
+                    if (!OrgNameList2.Items.Contains(new ListItem(OrgName)))
+                    {
+                        OrgNameList2.Items.Add(new ListItem(OrgName));
+                    }
                 }
+                OrgNameList2.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                string msg = "Insert Error:";
+                msg += ex.Message;
+                throw new Exception(msg);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        catch (System.Data.SqlClient.SqlException ex)
+        else
         {
-            string msg = "Insert Error:";
-            msg += ex.Message;
-            throw new Exception(msg);
-        }
-        finally
-        {
-            conn.Close();
+            Response.Redirect("~/Account/Login.aspx");
         }
     }
 
@@ -50,15 +59,9 @@ public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
         return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
     }
 
-    protected void AddShiftButton_Click(object sender, EventArgs e)
+    private void addShift(string day, string begin, string end, string info, string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string day = DayDropDown.Text.Trim();
-        string begin = BeginHourDropDown.Text.Trim() + ":" + BeginMinDropDown.Text.Trim();
-        string end = EndHourDropDown.Text.Trim() + ":" + EndMinDropDown.Text.Trim();
-        string info = ShiftNameTxt.Text.Trim();
-        string org_name = OrgNameList2.Text.Trim();
-
         string sql = "INSERT INTO [Shift Schedule] ([Organization Name], Day, [Begin Time], [End Time], [Shift Info]) VALUES ('" + org_name + "','" + day + "','" + begin + "','" + end + "','" + info + "')";
 
         try
@@ -78,18 +81,32 @@ public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
         finally
         {
             conn.Close();
-            Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
         }
+
     }
-    protected void RemoveShiftButton_Click(object sender, EventArgs e)
+
+    protected void AddShiftButton_Click(object sender, EventArgs e)
     {
-        SqlConnection conn = new SqlConnection(getConnectionString());
-        string day = DayDropDown.Text.Trim();
         string begin = BeginHourDropDown.Text.Trim() + ":" + BeginMinDropDown.Text.Trim();
         string end = EndHourDropDown.Text.Trim() + ":" + EndMinDropDown.Text.Trim();
-        string info = ShiftNameTxt.Text.Trim();
+        string info = NumOfWorList.Text.Trim();
+        string org_name = OrgNameList2.Text.Trim();
 
-        string sql = "DELETE FROM [Shift Schedule] WHERE Day =  '" + day + "' AND [Begin Time] =  '" + begin + "' AND [End Time] = '" + end + "'";
+        for (int i = 0; i < DayList.Items.Count; i++)
+        {
+            if (DayList.Items[i].Selected)
+            {
+                string day = DayList.Items[i].Text.Trim();
+                addShift(day, begin, end, info, org_name);
+            }
+        }
+        Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
+    }
+
+    private void removeShift(string day, string begin, string end, string info)
+    {
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        string sql = "DELETE FROM [Shift Schedule] WHERE Day =  '" + day + "' AND [Begin Time] =  '" + begin + "' AND [End Time] = '" + end + "' AND [Shift Info] = '" + info + "'";
 
         try
         {
@@ -108,8 +125,30 @@ public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
         finally
         {
             conn.Close();
-            Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
         }
+    }
 
+    protected void RemoveShiftButton_Click(object sender, EventArgs e)
+    {
+        string begin = BeginHourDropDown.Text.Trim() + ":" + BeginMinDropDown.Text.Trim();
+        string end = EndHourDropDown.Text.Trim() + ":" + EndMinDropDown.Text.Trim();
+        string info = NumOfWorList.Text.Trim();
+
+        for (int i = 0; i < DayList.Items.Count; i++)
+        {
+            if (DayList.Items[i].Selected)
+            {
+                string day = DayList.Items[i].Text.Trim();
+                removeShift(day, begin, end, info);
+            }
+        }
+        Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
+    }
+    protected void SelectAllButton_Click(object sender, EventArgs e)
+    {
+        for (int i = 0; i < DayList.Items.Count; i++)
+        {
+            DayList.Items[i].Selected = true;
+        }
     }
 }

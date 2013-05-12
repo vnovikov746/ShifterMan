@@ -62,6 +62,7 @@
         </table>
               <div>
                 <asp:Button ID="ManagerInfoFinishButton" runat="server" Text="Continue" onclick="infoFinish_Click" />
+                  <asp:Button ID="CancelEditingButton" runat="server" OnClick="CancelEditingButton_Click" Text="Cancel Editing" />
         </div>
     </div>
 </asp:Content>

@@ -10,8 +10,7 @@ using System.Data;
 
 public partial class Workers_WorkersIDs : System.Web.UI.Page
 {
-
-    string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[1].Trim();
+    bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
 
     private string getConnectionString()
     {
@@ -21,40 +20,49 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
-
-        try
+        if (isLogged)
         {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand(sql, conn);
+            string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
+            SqlConnection conn = new SqlConnection(getConnectionString());
+            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
 
-            SqlDataReader myReader = cmd.ExecuteReader();
-            while (myReader.Read())
+            try
             {
-                string OrgName = myReader.GetSqlString(0).Value;
-                if (!OrgNameList.Items.Contains(new ListItem(OrgName)))
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader myReader = cmd.ExecuteReader();
+                while (myReader.Read())
                 {
-                    OrgNameList.Items.Add(new ListItem(OrgName));
+                    string OrgName = myReader.GetSqlString(0).Value;
+                    if (!OrgNameList.Items.Contains(new ListItem(OrgName)))
+                    {
+                        OrgNameList.Items.Add(new ListItem(OrgName));
+                    }
                 }
+                OrgNameList.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                string msg = "Insert Error:";
+                msg += ex.Message;
+                throw new Exception(msg);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        catch (System.Data.SqlClient.SqlException ex)
+        else
         {
-            string msg = "Insert Error:";
-            msg += ex.Message;
-            throw new Exception(msg);
-        }
-        finally
-        {
-            conn.Close();
+            Response.Redirect("~/Account/Login.aspx");
         }
     }
 
     private void Insert_Info(string organization_name, string Type, string ID)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "INSERT INTO Worker ([Organization Name], ID, Type) VALUES ('" + organization_name + "','" + ID + "','" + Type +"')";
+        string sql = "INSERT INTO Worker ([Organization Name], ID, Type, flagInfo) VALUES ('" + organization_name + "','" + ID + "','" + Type +"','0')";
 
         try
         {
@@ -89,7 +97,7 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
     protected void RemoveWorButton_Click(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "DELETE FROM Worker WHERE ID = '" + WorkerIDTxt.Text.Trim() + "'";
+        string sql = "DELETE FROM Worker WHERE ID = '" + WorkerIDTxt.Text.Trim() + "' AND [Organization Name] = '" + System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim() + "'";
 
         try
         {

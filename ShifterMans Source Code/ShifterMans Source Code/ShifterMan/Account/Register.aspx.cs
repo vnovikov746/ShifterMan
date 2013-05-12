@@ -24,7 +24,7 @@ public partial class Account_Register : System.Web.UI.Page
     private void ExecuteInsert(string organization_name, string id)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "INSERT INTO Worker ([Organization Name], ID, Type) VALUES ('" + organization_name + "','" + id + "','Manager')";
+        string sql = "INSERT INTO Worker ([Organization Name], ID, Type, flagInfo, flagWorkers) VALUES ('" + organization_name + "','" + id + "','Manager','0','0')";
 
         try
         {
@@ -48,28 +48,27 @@ public partial class Account_Register : System.Web.UI.Page
 
     protected void SignUp_Click(object sender, EventArgs e)
     {
-        ExecuteInsert(TxtOrganizationName.Text, TxtID.Text);
-        Response.Write("Record was successfully added!");
-
         SqlConnection conn = new SqlConnection(getConnectionString());
+        string sql = "SELECT [Organization Name] FROM Worker";
+        bool orgExist = false;
+
         try
         {
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT Type FROM Worker WHERE [Organization Name] = '" + TxtOrganizationName.Text.Trim() + "' AND ID = '" + TxtID.Text.Trim() + "'", conn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            DataTable dataTable = new DataTable();
-            dataTable.Load(reader);
-            int rowCount = dataTable.Rows.Count;
-            reader = cmd.ExecuteReader();
-            reader.Read();
-            String type = Convert.ToString(reader[0]);
-            type = type.Trim();
-
-            FormsAuthentication.SetAuthCookie(type + ": " + TxtID.Text.Trim(), false /* createPersistentCookie */);
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            SqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                string OrgName = myReader.GetSqlString(0).Value;
+                if (TxtOrganizationName.Text.Trim().Equals(OrgName))
+                {
+                    orgExist = true;
+                }
+            }
         }
         catch (System.Data.SqlClient.SqlException ex)
         {
-            string msg = "Validation Error:";
+            string msg = "Insert Error:";
             msg += ex.Message;
             throw new Exception(msg);
         }
@@ -78,6 +77,20 @@ public partial class Account_Register : System.Web.UI.Page
             conn.Close();
         }
 
-        Response.Redirect("~/Workers/ManagerInfo.aspx");
+        if (!orgExist)
+        {
+            ExecuteInsert(TxtOrganizationName.Text, TxtID.Text);
+            FormsAuthentication.SetAuthCookie(TxtOrganizationName.Text.Trim() + " Manager: " + TxtID.Text.Trim(), false /* createPersistentCookie */);
+
+            Response.Redirect("~/Workers/ManagerInfo.aspx");
+        }
+
+        else
+        {
+            orgExistLabel.Visible = true;
+            TxtOrganizationName.Text = "";
+            TxtVerifyID.Text = "";
+            TxtID.Text = "";
+        }
     }
 }

@@ -10,6 +10,8 @@ using System.Data;
 
 public partial class Account_Login : System.Web.UI.Page
 {
+    String type;
+
     private string getConnectionString()
     {
         //sets the connection string from your web config file "ConnString" is the name of your Connection String
@@ -23,6 +25,7 @@ public partial class Account_Login : System.Web.UI.Page
 
     private void VerifyUser(string organization_name, string id)
     {
+        bool ok = true;
         SqlConnection conn = new SqlConnection(getConnectionString());
         try
         {
@@ -36,16 +39,14 @@ public partial class Account_Login : System.Web.UI.Page
             {
                 reader = cmd.ExecuteReader();
                 reader.Read();
-                String type = Convert.ToString(reader[0]);
+                type = Convert.ToString(reader[0]);
                 type = type.Trim();
 
-                FormsAuthentication.SetAuthCookie(type + ": " + id , false /* createPersistentCookie */);
-
-                Response.Redirect("~/Workers/" + type + ".aspx");
+                FormsAuthentication.SetAuthCookie(organization_name.Trim() + " " + type + ": " + id, false /* createPersistentCookie */);
             }
             else
             {
-                Try_Again();
+                ok = false;
             }
         }
         catch (System.Data.SqlClient.SqlException ex)
@@ -57,6 +58,49 @@ public partial class Account_Login : System.Web.UI.Page
         finally
         {
             conn.Close();
+
+            if (ok)
+            {
+                redirectTo(organization_name, id);
+            }
+            else
+            {
+                Try_Again();
+            }
+        }
+    }
+
+    private void redirectTo(string organization_name, string id)
+    {
+        string flagIn;
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        try
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT flagInfo FROM Worker WHERE [Organization Name] = '" + organization_name + "' AND ID = '" + id + "'", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            flagIn = Convert.ToString(reader[0]);
+            flagIn = flagIn.Trim();
+        }
+        catch (System.Data.SqlClient.SqlException ex)
+        {
+            string msg = "Validation Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
+        }
+        finally
+        {
+            conn.Close();
+        }
+
+        if (flagIn.Equals("0"))
+        {
+            Response.Redirect("~/Workers/" + type + "Info.aspx");
+        }
+        else
+        {
+            Response.Redirect("~/Workers/" + type + ".aspx");
         }
     }
 

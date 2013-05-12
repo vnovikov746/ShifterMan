@@ -43,7 +43,7 @@
               <br/>
               <br/>
               <div>
-                  <asp:GridView ID="ShiftSpcificationsTable" runat="server" AutoGenerateColumns="False" DataSourceID="ShiftSpecificationTable" Width="923px">
+                  <asp:GridView ID="ShiftSpcificationsTable" runat="server" AutoGenerateColumns="False" DataSourceID="ShiftSpecificationTable" Width="923px" AllowSorting="True" ShowHeaderWhenEmpty="True">
                       <Columns>
                           <asp:BoundField DataField="Day" HeaderText="Day" SortExpression="Day" />
                           <asp:BoundField DataField="Begin_Time" HeaderText="Begin Time" SortExpression="Begin_Time" />
@@ -57,6 +57,7 @@
                       </SelectParameters>
                   </asp:SqlDataSource>
               </div>
+
               <br/>
               <br/>
               <br/>
@@ -80,23 +81,21 @@
                           </td>
                           <td class="auto-style7">
 
-                              Name Of Shift
-
-                          </td>
+                              Number Of Workers</td>
                       </tr>
 
                       <tr>
                           <td class="auto-style2">
-                              <asp:DropDownList ID="DayDropDown" runat="server">
-                                  <asp:ListItem Selected="True">Sunday</asp:ListItem>
+                              <asp:Button ID="SelectAllButton" runat="server" OnClick="SelectAllButton_Click" Text="Select All" />
+                              <asp:CheckBoxList ID="DayList" runat="server" BorderColor="Black" BorderStyle="None" Font-Overline="False" Font-Size="Small" Font-Strikeout="False" Font-Underline="True" Width="140px" CellPadding="3" ToolTip="Select Days">
+                                  <asp:ListItem>Sunday</asp:ListItem>
                                   <asp:ListItem>Monday</asp:ListItem>
                                   <asp:ListItem>Tusday</asp:ListItem>
                                   <asp:ListItem>Wednsday</asp:ListItem>
                                   <asp:ListItem>Thursday</asp:ListItem>
                                   <asp:ListItem>Friday</asp:ListItem>
                                   <asp:ListItem>Saturday</asp:ListItem>
-                              </asp:DropDownList>
-
+                              </asp:CheckBoxList>
                           </td>
                           <td class="auto-style3">
                                   <table class="style1">
@@ -134,7 +133,7 @@
                                           </td>
                                           <td>
                                                 <asp:DropDownList ID="BeginMinDropDown" runat="server">
-                                                <asp:ListItem Selected="True">00</asp:ListItem>
+                                                <asp:ListItem>00</asp:ListItem>
                                                 <asp:ListItem>15</asp:ListItem>
                                                 <asp:ListItem>30</asp:ListItem>
                                                 <asp:ListItem>45</asp:ListItem>
@@ -157,7 +156,7 @@
                                                 <asp:ListItem>04</asp:ListItem>
                                                 <asp:ListItem>05</asp:ListItem>
                                                 <asp:ListItem>06</asp:ListItem>
-                                                <asp:ListItem Selected="True">07</asp:ListItem>
+                                                <asp:ListItem>07</asp:ListItem>
                                                 <asp:ListItem>08</asp:ListItem>
                                                 <asp:ListItem>09</asp:ListItem>
                                                 <asp:ListItem>10</asp:ListItem>
@@ -165,7 +164,7 @@
                                                 <asp:ListItem>12</asp:ListItem>
                                                 <asp:ListItem>13</asp:ListItem>
                                                 <asp:ListItem>14</asp:ListItem>
-                                                <asp:ListItem>15</asp:ListItem>
+                                                <asp:ListItem Selected="True">15</asp:ListItem>
                                                 <asp:ListItem>16</asp:ListItem>
                                                 <asp:ListItem>17</asp:ListItem>
                                                 <asp:ListItem>18</asp:ListItem>
@@ -181,7 +180,7 @@
                                           </td>
                                           <td>
                                                 <asp:DropDownList ID="EndMinDropDown" runat="server">
-                                                <asp:ListItem Selected="True">00</asp:ListItem>
+                                                <asp:ListItem>00</asp:ListItem>
                                                 <asp:ListItem>15</asp:ListItem>
                                                 <asp:ListItem>30</asp:ListItem>
                                                 <asp:ListItem>45</asp:ListItem>
@@ -193,7 +192,18 @@
                           
                           <td class="auto-style7">
 
-                              <asp:TextBox ID="ShiftNameTxt" runat="server"></asp:TextBox>
+                              <asp:DropDownList ID="NumOfWorList" runat="server" Width="73px">
+                                  <asp:ListItem>1</asp:ListItem>
+                                  <asp:ListItem>2</asp:ListItem>
+                                  <asp:ListItem>3</asp:ListItem>
+                                  <asp:ListItem>4</asp:ListItem>
+                                  <asp:ListItem>5</asp:ListItem>
+                                  <asp:ListItem>6</asp:ListItem>
+                                  <asp:ListItem>7</asp:ListItem>
+                                  <asp:ListItem>8</asp:ListItem>
+                                  <asp:ListItem>9</asp:ListItem>
+                                  <asp:ListItem>10</asp:ListItem>
+                              </asp:DropDownList>
 
                           </td>
                       </tr>

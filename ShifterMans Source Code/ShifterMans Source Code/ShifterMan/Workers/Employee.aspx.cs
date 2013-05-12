@@ -10,40 +10,49 @@ using System.Data;
 
 public partial class Workers_Employee : System.Web.UI.Page
 {
-    string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[1].Trim();
+    bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Employee'";
-
-        try
+        if (isLogged)
         {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand(sql, conn);
+            string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
+            SqlConnection conn = new SqlConnection(getConnectionString());
+            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Employee'";
 
-            SqlDataReader myReader = cmd.ExecuteReader();
-            while (myReader.Read())
+            try
             {
-                string OrgName = myReader.GetSqlString(0).Value;
-                if (!OrgNameList3.Items.Contains(new ListItem(OrgName)))
-                {
-                    OrgNameList3.Items.Add(new ListItem(OrgName));
-                }
-            }
-        }
-        catch (System.Data.SqlClient.SqlException ex)
-        {
-            string msg = "Insert Error:";
-            msg += ex.Message;
-            throw new Exception(msg);
-        }
-        finally
-        {
-            conn.Close();
-        }
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
 
-        fillTable();
+                SqlDataReader myReader = cmd.ExecuteReader();
+                while (myReader.Read())
+                {
+                    string OrgName = myReader.GetSqlString(0).Value;
+                    if (!OrgNameList3.Items.Contains(new ListItem(OrgName)))
+                    {
+                        OrgNameList3.Items.Add(new ListItem(OrgName));
+                    }
+                }
+                OrgNameList3.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                string msg = "Insert Error:";
+                msg += ex.Message;
+                throw new Exception(msg);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            fillTable(OrgNameList3.SelectedItem.Value.ToString().Trim());
+        }
+        else
+        {
+            Response.Redirect("~/Account/Login.aspx");
+        }
     }
 
     private string getConnectionString()
@@ -52,10 +61,8 @@ public partial class Workers_Employee : System.Web.UI.Page
         return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
     }
 
-    private void fillTable()
+    private void fillTable(string org_name)
     {
-        string org_name = OrgNameList3.Text.Trim();
-
         DataTable dt = new DataTable();
 
         DataColumn dcHourDay = new DataColumn("HourDay", typeof(string));
@@ -70,7 +77,7 @@ public partial class Workers_Employee : System.Web.UI.Page
         dt.Columns.AddRange(new DataColumn[] { dcHourDay, dcSunday, dcMonday, dcTusday, dcWednsday, dcThursday, dcFriday, dcSaturday });
 
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "SELECT [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        string sql = "SELECT DISTINCT [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
         try
         {
             conn.Open();
@@ -79,11 +86,12 @@ public partial class Workers_Employee : System.Web.UI.Page
             SqlDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                dt.Rows.Add(new object[] { myReader["Begin Time"].ToString().Trim() + "-" + myReader["End Time"].ToString().Trim() + " -> " + myReader["Shift Info"].ToString().Trim(), "", "", "", "", "", "", "" });
-            }
-            if (dt.Rows.Count == 0)
-            {
-                dt.Rows.Add(new object[] { "", "", "", "", "", "", "", "" });
+                int numOfWorkers = Convert.ToInt16(myReader["Shift Info"].ToString().Trim());
+                for (int i = 0; i < numOfWorkers; i++)
+                {
+                    dt.Rows.Add(new object[] { myReader["Begin Time"].ToString().Trim() + "-" + myReader["End Time"].ToString().Trim()/* + " -> " + myReader["Shift Info"].ToString().Trim() + " Workers In Shift"*/, "", "", "", "", "", "", "" });
+                }
+                dt.Rows.Add(new object[] { "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------" });
             }
             WeeklyScheduleGrid.DataSource = dt;
             WeeklyScheduleGrid.DataBind();

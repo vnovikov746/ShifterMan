@@ -28,9 +28,9 @@
                             <br />
                         </td>
                         <td class="style1">
-                            <asp:DropDownList ID="OrgNameList" runat="server" DataSourceID="ShifterManDatabase" DataTextField="Org_Name" DataValueField="Org_Name">
+                            <asp:DropDownList ID="OrgNameList" runat="server" DataSourceID="OrganizationName" DataTextField="Organization_Name" DataValueField="Organization_Name">
                             </asp:DropDownList>
-                            <asp:SqlDataSource ID="ShifterManDatabase" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT DISTINCT [Org_Name] FROM [Organization]"></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="OrganizationName" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT DISTINCT [Organization Name] AS Organization_Name FROM [Worker]"></asp:SqlDataSource>
                             <br />
                             <br />
                         </td>

@@ -22,7 +22,7 @@ public partial class _Default : System.Web.UI.Page
      
         if (isLogged)
         {
-            string type = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Replace(':',' ').Trim();
+            string type = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[1].Replace(':',' ').Trim();
             Response.Redirect("~/Workers/" + type + ".aspx");
         }
     }

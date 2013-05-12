@@ -31,7 +31,7 @@
     </h2>
           <div>
               <div>
-                  Your Company:&nbsp;
+                  Your Company:
                   <asp:DropDownList ID="OrgNameList" runat="server">
                   </asp:DropDownList>
                   <br />
@@ -80,11 +80,15 @@
                            <br/>
                            <br/>
                        <table>
-                           <tr>
+                           <tr>&nbsp;&nbsp;</tr>
+                           <tr></tr>
+                           <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>
+                           <tr></tr>
+                           <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>
+                           <tr></tr>
+                          <tr>
                             <td class="auto-style1"><asp:Button ID="AddWorkerButton" runat="server" OnClick="AddWorkerButton_Click" Text="Add Worker" Width="172px" /></td>
-                              <td>
-                                <asp:Button ID="RemoveWorButton" runat="server" OnClick="RemoveWorButton_Click" Text="Remove Worker" Width="197px" />
-                              </td>                             
+                              <td><asp:Button ID="RemoveWorButton" runat="server" OnClick="RemoveWorButton_Click" Text="Remove Worker" Width="197px" /></td>                             
                                <td class="auto-style2"><asp:Button ID="DoneButton" runat="server" OnClick="DoneButton_Click" Text="DONE" Width="157px" /></td>
                             </tr>
                        </table>
