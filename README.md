@@ -34,6 +34,8 @@ __Project Stages__:
 
 - [ZFR] (https://github.com/kakifish/ShifterMan/wiki/Iteration-0---ZFR)
 
+- [MVP] (https://github.com/kakifish/ShifterMan/wiki/Iteration-1-MVP)
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
