@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
-using System.Web.UI.WebControls;
 
 public partial class Scheduler_ShiftOptions : System.Web.UI.Page
 {

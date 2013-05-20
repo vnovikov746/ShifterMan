@@ -34,7 +34,7 @@
                         <asp:MenuItem NavigateUrl="~/Workers/ManagerInfo.aspx" Text="Change Information" Value="Change Information"></asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Workers/WorkersIDs.aspx" Text="Add Workers" Value="Add Workers"></asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Scheduler/ShiftSpecifications.aspx" Text="Shift Specifications" Value="Shift Specifications"></asp:MenuItem>
-                        <asp:MenuItem NavigateUrl="~/Scheduler/WeeklySchedule.aspx" Text="Creeate Weekly Schedule" Value="Create Weekly Schedule"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/Scheduler/WeeklySchedule.aspx" Text="Create Weekly Schedule" Value="Create Weekly Schedule"></asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Scheduler/ScheduleHistory.aspx" Text="Schedule History" Value="Schedule History"></asp:MenuItem>
                     </Items>
                 </asp:Menu>
