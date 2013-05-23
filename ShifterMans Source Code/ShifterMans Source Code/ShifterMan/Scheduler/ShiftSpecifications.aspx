@@ -36,8 +36,7 @@
                   </h3>
               <div>
                   Your Company:
-                  <asp:DropDownList ID="OrgNameList2" runat="server">
-                  </asp:DropDownList>
+                  <asp:Label ID="orgNameLabel" runat="server" Text="Label"></asp:Label>
               </div>
               <br/>
               <br/>
@@ -48,12 +47,12 @@
                           <asp:BoundField DataField="Day" HeaderText="Day" SortExpression="Day" />
                           <asp:BoundField DataField="Begin_Time" HeaderText="Begin Time" SortExpression="Begin_Time" />
                           <asp:BoundField DataField="End_Time" HeaderText="End Time" SortExpression="End_Time" />
-                          <asp:BoundField DataField="Shift_Info" HeaderText="Shift Info" SortExpression="Shift_Info" />
+                          <asp:BoundField DataField="Shift_Info" HeaderText="Number Of Workers" SortExpression="Shift_Info" />
                       </Columns>
                   </asp:GridView>
                   <asp:SqlDataSource ID="ShiftSpecificationTable" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT [Day], [Begin Time] AS Begin_Time, [End Time] AS End_Time, [Shift Info] AS Shift_Info FROM [Shift Schedule] WHERE ([Organization Name] = @Organization_Name)">
                       <SelectParameters>
-                          <asp:ControlParameter ControlID="OrgNameList2" Name="Organization_Name" PropertyName="SelectedValue" Type="String" />
+                          <asp:ControlParameter ControlID="orgNameLabel" Name="Organization_Name" PropertyName="Text" Type="String" />
                       </SelectParameters>
                   </asp:SqlDataSource>
               </div>

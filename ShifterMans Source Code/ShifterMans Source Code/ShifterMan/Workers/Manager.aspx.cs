@@ -16,38 +16,8 @@ public partial class Workers_Manager : System.Web.UI.Page
     {
         if (isLogged)
         {
-            string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
-            SqlConnection conn = new SqlConnection(getConnectionString());
-            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader myReader = cmd.ExecuteReader();
-                while (myReader.Read())
-                {
-                    string OrgName = myReader.GetSqlString(0).Value;
-                    if (!OrgNameList3.Items.Contains(new ListItem(OrgName)))
-                    {
-                        OrgNameList3.Items.Add(new ListItem(OrgName));
-                    }
-                }
-                OrgNameList3.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                string msg = "Insert Error:";
-                msg += ex.Message;
-                throw new Exception(msg);
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            fillTable(OrgNameList3.SelectedItem.Value.ToString().Trim());
+            string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            fillTable(orgName);
         }
         else
         {
@@ -94,7 +64,7 @@ public partial class Workers_Manager : System.Web.UI.Page
                 {
                     dt.Rows.Add(new object[] { myReader["Begin Time"].ToString().Trim() + "-" + myReader["End Time"].ToString().Trim()/* + " -> " + myReader["Shift Info"].ToString().Trim() + " Workers In Shift"*/, "", "", "", "", "", "", "" });
                 }
-                dt.Rows.Add(new object[] { "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------" });
+//                dt.Rows.Add(new object[] { "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------", "----------------------" });
             }
             WeeklyScheduleGrid.DataSource = dt;
             WeeklyScheduleGrid.DataBind();

@@ -23,35 +23,8 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
         if (isLogged)
         {
             string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
-            SqlConnection conn = new SqlConnection(getConnectionString());
-            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader myReader = cmd.ExecuteReader();
-                while (myReader.Read())
-                {
-                    string OrgName = myReader.GetSqlString(0).Value;
-                    if (!OrgNameList.Items.Contains(new ListItem(OrgName)))
-                    {
-                        OrgNameList.Items.Add(new ListItem(OrgName));
-                    }
-                }
-                OrgNameList.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                string msg = "Insert Error:";
-                msg += ex.Message;
-                throw new Exception(msg);
-            }
-            finally
-            {
-                conn.Close();
-            }
+            string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            orgNameLable.Text = orgName;
         }
         else
         {
@@ -86,7 +59,7 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
     
     protected void AddWorkerButton_Click(object sender, EventArgs e)
     {
-        Insert_Info(OrgNameList.Text, WorTypeList.Text, WorkerIDTxt.Text);
+        Insert_Info(orgNameLable.Text, WorTypeList.Text, WorkerIDTxt.Text);
         Response.Redirect("~/Workers/WorkersIDs.aspx");
     }
     protected void DoneButton_Click(object sender, EventArgs e)
@@ -97,7 +70,7 @@ public partial class Workers_WorkersIDs : System.Web.UI.Page
     protected void RemoveWorButton_Click(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "DELETE FROM Worker WHERE ID = '" + WorkerIDTxt.Text.Trim() + "' AND [Organization Name] = '" + System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim() + "'";
+        string sql = "DELETE FROM Worker WHERE ID = '" + WorkerIDTxt.Text.Trim() + "' AND [Organization Name] = '" + orgNameLable.Text.Trim() + "'";
 
         try
         {

@@ -32,16 +32,15 @@
           <div>
               <div>
                   Your Company:
-                  <asp:DropDownList ID="OrgNameList" runat="server">
-                  </asp:DropDownList>
+                  <asp:Label ID="orgNameLable" runat="server" Text="Label"></asp:Label>
                   <br />
                   <br />
                   Your Workers:<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" DataSourceID="WorInfo" AllowSorting="True" Width="923px">
                       <Columns>
                           <asp:BoundField DataField="Type" HeaderText="Type" SortExpression="Type" />
                           <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" />
-                          <asp:BoundField DataField="First_Name" HeaderText="First Name" SortExpression="First_Name" />
-                          <asp:BoundField DataField="Last_Name" HeaderText="Last Name" SortExpression="Last_Name" />
+                          <asp:BoundField DataField="First_Name" HeaderText="First_Name" SortExpression="First_Name" />
+                          <asp:BoundField DataField="Last_Name" HeaderText="Last_Name" SortExpression="Last_Name" />
                           <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
                       </Columns>
                       <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
@@ -54,9 +53,10 @@
                       <SortedDescendingCellStyle BackColor="#F1E5CE" />
                       <SortedDescendingHeaderStyle BackColor="#93451F" />
                   </asp:GridView>
-                  <asp:SqlDataSource ID="WorInfo" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT [Type], [ID], [First Name] AS First_Name, [Last Name] AS Last_Name, [Email] FROM [Worker] WHERE ([Organization Name] = @Organization_Name)">
+                  <asp:SqlDataSource ID="WorInfo" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT [Type], [ID], [First Name] AS First_Name, [Last Name] AS Last_Name, [Email] FROM [Worker] WHERE (([Organization Name] = @Organization_Name) AND ([Organization Name] = @Organization_Name2))">
                       <SelectParameters>
-                          <asp:ControlParameter ControlID="OrgNameList" Name="Organization_Name" PropertyName="SelectedValue" Type="String" />
+                          <asp:ControlParameter ControlID="orgNameLable" Name="Organization_Name" PropertyName="Text" Type="String" />
+                          <asp:ControlParameter ControlID="orgNameLable" Name="Organization_Name2" PropertyName="Text" Type="String" />
                       </SelectParameters>
                   </asp:SqlDataSource>
                   <br />
@@ -81,11 +81,8 @@
                            <br/>
                        <table>
                            <tr>&nbsp;&nbsp;</tr>
-                           <tr></tr>
                            <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-                           <tr></tr>
                            <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-                           <tr></tr>
                           <tr>
                             <td class="auto-style1"><asp:Button ID="AddWorkerButton" runat="server" OnClick="AddWorkerButton_Click" Text="Add Worker" Width="172px" /></td>
                               <td><asp:Button ID="RemoveWorButton" runat="server" OnClick="RemoveWorButton_Click" Text="Remove Worker" Width="197px" /></td>                             

@@ -6,6 +6,18 @@
 <head id="Head1" runat="server">
     <title></title>
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .auto-style1 {
+            margin-left: 0px;
+        }
+        .auto-style2 {
+            margin-left: 0px;
+            width: 329px;
+        }
+        .auto-style3 {
+            width: 247px;
+        }
+    </style>
 </head>
 <body>
     <form id="Form1" runat="server">
@@ -42,47 +54,77 @@
         </div>
         <div class="main">
             <div>
-                  Your Company:
-                  <asp:DropDownList ID="OrgNameList3" runat="server" OnSelectedIndexChanged="OrgNameList3_SelectedIndexChanged">
-                  </asp:DropDownList>
-            </div>
-            <div>
                 <h2>
-                    Weekly Schedule</h2>
+                    <asp:Label ID="weeklyLabel" runat="server" Text="WEEKLY SCHEDULE FOR "></asp:Label>
+                    <asp:Label ID="orgNameLabel" runat="server" Text="OrgName"></asp:Label>
+                </h2>
             </div>
             <div>
-                <asp:GridView ID="WeeklyScheduleGrid" runat="server" AutoGenerateColumns="False" Width="929px" ShowHeaderWhenEmpty="True">
+                <asp:GridView ID="WeeklyScheduleGrid" runat="server" AutoGenerateColumns="False" Width="933px" ShowHeaderWhenEmpty="True" CellPadding="10" CssClass="auto-style1" HorizontalAlign="Left">
+                    <AlternatingRowStyle HorizontalAlign="Justify" VerticalAlign="Top" />
                     <Columns>
                         <asp:BoundField DataField="HourDay" HeaderText="Hour/Day">
+                        <ControlStyle Height="100%" Width="100%" />
                         <ItemStyle BackColor="#FF66FF" />
                         </asp:BoundField>
-                        <asp:BoundField DataField="Sunday" HeaderText="Sunday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Monday" HeaderText="Monday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Tusday" HeaderText="Tusday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Wednsday" HeaderText="Wednsday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Thursday" HeaderText="Thursday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Friday" HeaderText="Friday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Saturday" HeaderText="Saturday">
-                        <HeaderStyle BackColor="#FF66CC" />
-                        </asp:BoundField>
+                        <asp:TemplateField HeaderText="Sunday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Monday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Tusday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Wednsday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Thursday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Friday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Saturday">
+                            <ControlStyle Height="100%" Width="100%" />
+                            <HeaderStyle BackColor="#FF66CC" />
+                        </asp:TemplateField>
                     </Columns>
+                    <EditRowStyle HorizontalAlign="Justify" VerticalAlign="Top" />
                 </asp:GridView>
             </div>
-        </div>
-        <div class="clear">
-        </div>
+            <div class="clear">
+                <br/>
+                <br/>
+                <table class="auto-style2" align="center">
+                    <tr>
+                        <td class="auto-style3">
+                            <asp:Button ID="GenerateScheduleButton" runat="server" Text="Generate" CssClass="auto-style1" Font-Bold="True" Font-Italic="True" Font-Size="Large" Height="42px" Width="144px" OnClick="GenerateScheduleButton_Click" />
+                        </td>
+                        <td class="style1">
+                            <asp:Button ID="SubmitScheduleButton" runat="server" Text="Submit" Font-Bold="True" Font-Italic="True" Font-Size="Large" Height="41px" Width="130px" OnClick="SubmitScheduleButton_Click" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Workers That Gave Options:</td>
+                        <td>
+                            <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="GaveOptionsWorkers" DataTextField="Worker_ID" DataValueField="Worker_ID">
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="GaveOptionsWorkers" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT DISTINCT [Worker ID] AS Worker_ID FROM [Shift Options] WHERE ([Organization Name] = @Organization_Name)">
+                                <SelectParameters>
+                                    <asp:ControlParameter ControlID="orgNameLabel" Name="Organization_Name" PropertyName="Text" Type="String" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
+                        </td>
+                    </tr>
+                </table>
+            </div>
     </div>
     <div class="footer">
         

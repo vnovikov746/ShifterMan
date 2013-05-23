@@ -39,17 +39,12 @@
             </div>
         </div>
         <div class="main">
-                        <div>
-                  Your Company:
-                  <asp:DropDownList ID="OrgNameList3" runat="server">
-                  </asp:DropDownList>
-            </div>
             <div>
                 <h2>
                     Weekly Schedule</h2>
             </div>
             <div>
-                <asp:GridView ID="WeeklyScheduleGrid" runat="server" AutoGenerateColumns="False" Width="929px" ShowHeaderWhenEmpty="True">
+                <asp:GridView ID="WeeklyScheduleGrid" runat="server" AutoGenerateColumns="False" Width="929px" ShowHeaderWhenEmpty="True" CellPadding="10">
                     <Columns>
                         <asp:BoundField DataField="HourDay" HeaderText="Hour/Day">
                         <ItemStyle BackColor="#FF66FF" />

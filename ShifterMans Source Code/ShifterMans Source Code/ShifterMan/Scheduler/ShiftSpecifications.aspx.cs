@@ -17,35 +17,8 @@ public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
         if (isLogged)
         {
             string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
-            SqlConnection conn = new SqlConnection(getConnectionString());
-            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Manager'";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader myReader = cmd.ExecuteReader();
-                while (myReader.Read())
-                {
-                    string OrgName = myReader.GetSqlString(0).Value;
-                    if (!OrgNameList2.Items.Contains(new ListItem(OrgName)))
-                    {
-                        OrgNameList2.Items.Add(new ListItem(OrgName));
-                    }
-                }
-                OrgNameList2.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                string msg = "Insert Error:";
-                msg += ex.Message;
-                throw new Exception(msg);
-            }
-            finally
-            {
-                conn.Close();
-            }
+            string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            orgNameLabel.Text = orgName;
         }
         else
         {
@@ -90,7 +63,7 @@ public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
         string begin = BeginHourDropDown.Text.Trim() + ":" + BeginMinDropDown.Text.Trim();
         string end = EndHourDropDown.Text.Trim() + ":" + EndMinDropDown.Text.Trim();
         string info = NumOfWorList.Text.Trim();
-        string org_name = OrgNameList2.Text.Trim();
+        string org_name = orgNameLabel.Text.Trim();
 
         for (int i = 0; i < DayList.Items.Count; i++)
         {

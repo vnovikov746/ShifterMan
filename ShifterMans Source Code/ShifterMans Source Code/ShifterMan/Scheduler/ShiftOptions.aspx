@@ -8,11 +8,6 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-   <div>
-       Your Company:
-       <asp:DropDownList ID="OrgNameList3" runat="server">
-       </asp:DropDownList>
-   </div>
                 <div>
                 <h2>
                     Your Shift Options</h2>
@@ -66,7 +61,7 @@
         <br />
         <br />
         <br />
-        <asp:Button ID="SubmitShiftsButton" runat="server" OnClick="SubmitShiftsButton_Click" Text="Submit Shifts" />
+        <asp:Button ID="SubmitShiftsButton" runat="server" OnClick="SubmitShiftsButton_Click" Text="Submit Shifts" Font-Bold="True" Font-Italic="True" Font-Size="Large" Height="40px" Width="148px" />
 
         </div>
 </asp:Content>

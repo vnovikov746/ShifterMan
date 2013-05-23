@@ -26,38 +26,8 @@ public partial class Scheduler_ShiftOptions : System.Web.UI.Page
     {
         if (isLogged)
         {
-            string ManagerID = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[2].Trim();
-            SqlConnection conn = new SqlConnection(getConnectionString());
-            string sql = "SELECT DISTINCT [Organization Name] FROM Worker WHERE ID = '" + ManagerID + "' AND Type = 'Employee'";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader myReader = cmd.ExecuteReader();
-                while (myReader.Read())
-                {
-                    string OrgName = myReader.GetSqlString(0).Value;
-                    if (!OrgNameList3.Items.Contains(new ListItem(OrgName)))
-                    {
-                        OrgNameList3.Items.Add(new ListItem(OrgName));
-                    }
-                }
-                OrgNameList3.SelectedValue = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                string msg = "Insert Error:";
-                msg += ex.Message;
-                throw new Exception(msg);
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            fillTable(OrgNameList3.SelectedItem.Value.ToString().Trim());
+            string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            fillTable(orgName);
         }
         else
         {
