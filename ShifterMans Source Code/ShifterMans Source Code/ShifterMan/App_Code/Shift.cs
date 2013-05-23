@@ -13,8 +13,9 @@ public class Shift
     private string organization;
     private string priority;
     private string week;
+    private string numOfWorkers;
 
-    public Shift(string worker_ID, string day, string begin_Time, string end_Time, string organization, string priority)
+    public Shift(string worker_ID, string day, string begin_Time, string end_Time, string organization, string priority, string numOfWorkers)
     {
         this.worker_ID = worker_ID;
         this.day = day;
@@ -22,6 +23,7 @@ public class Shift
         this.end_Time = end_Time;
         this.organization = organization;
         this.priority = priority;
+        this.numOfWorkers = numOfWorkers;
     }
 
     public string getWroker_ID()
@@ -79,5 +81,13 @@ public class Shift
     public void setWeek(string week)
     {
         this.week = week;
+    }
+    public string getNumOfWorkers()
+    {
+        return this.numOfWorkers;
+    }
+    public void setNumOfWorkers(string numOfWorkers)
+    {
+        this.numOfWorkers = numOfWorkers;
     }
 }

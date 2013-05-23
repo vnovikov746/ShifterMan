@@ -47,7 +47,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             SqlDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                Shift shiftOption = new Shift(null, null, null, null, null, null);
+                Shift shiftOption = new Shift(null, null, null, null, null, null, null);
                 shiftOption.setWorker_ID(myReader[0].ToString().Trim());
                 shiftOption.setDay(myReader[1].ToString().Trim());
                 shiftOption.setBegin_Time(myReader[2].ToString().Trim());
@@ -72,7 +72,8 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
     private void fillWeeklyShiftTable(string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        string sql = "SELECT [Day], [Begin Time], [End Time] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        SqlConnection conn2 = new SqlConnection(getConnectionString());
+        string sql = "SELECT DISTINCT [Day], [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
         try
         {
             conn.Open();
@@ -81,10 +82,11 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             SqlDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                Shift shiftInWeek = new Shift(null, null, null, null, null, null);
+                Shift shiftInWeek = new Shift(null, null, null, null, null, null, null);
                 shiftInWeek.setDay(myReader[0].ToString().Trim());
                 shiftInWeek.setBegin_Time(myReader[1].ToString().Trim());
                 shiftInWeek.setEnd_Time(myReader[2].ToString().Trim());
+                shiftInWeek.setNumOfWorkers(myReader[3].ToString().Trim());
                 weeklyShiftTable.AddShift(shiftInWeek);
             }
         }
@@ -97,6 +99,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
         finally
         {
             conn.Close();
+            conn2.Close();
         }
     }
     
@@ -226,38 +229,22 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
         {
             conn.Close();
         }
+
         for (int i = 0; i < WeeklyScheduleGrid.Rows.Count; i++)
         {
             for (int j = 1; j < WeeklyScheduleGrid.Columns.Count; j++)
             {
                 DropDownList workers = new DropDownList();
 
-                sql = "SELECT DISTINCT [First Name], [Last Name] FROM [Worker] WHERE [Organization Name] = '" + org_name + "'";
-                try
+                int k = 0;
+                while (k < allWorkersList.listSize())
                 {
-                    conn = new SqlConnection(getConnectionString());
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    SqlDataReader myReader = cmd.ExecuteReader();
-                    while (myReader.Read())
-                    {
-                        string workerName = myReader.GetSqlString(0).Value + " " + myReader.GetSqlString(1).Value;
-                        workers.Items.Add(new ListItem(workerName));
-                    }
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    string msg = "Insert Error:";
-                    msg += ex.Message;
-                    throw new Exception(msg);
-                }
-                finally
-                {
-                    conn.Close();
+                    workers.Items.Add(new ListItem(allWorkersList.getWorkerFromList(k).getFirst_Name() + " " + allWorkersList.getWorkerFromList(k).getLast_Name()));
+                    k++;
+
                 }
                 WeeklyScheduleGrid.Rows[i].Cells[j].Controls.Add(workers);
-
-                Random ran = new Random();
+                Random ran = new Random(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
                 int select = ran.Next(0, ((DropDownList)(WeeklyScheduleGrid.Rows[i].Cells[j].Controls[0])).Items.Count);
                 ((DropDownList)(WeeklyScheduleGrid.Rows[i].Cells[j].Controls[0])).SelectedIndex = select;
             }
