@@ -17,7 +17,6 @@ public partial class Workers_Manager : System.Web.UI.Page
         if (isLogged)
         {
             string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
-            fillTable(orgName);
         }
         else
         {

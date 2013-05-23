@@ -114,7 +114,7 @@
                     <tr>
                         <td>Workers That Gave Options:</td>
                         <td>
-                            <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="GaveOptionsWorkers" DataTextField="Worker_ID" DataValueField="Worker_ID">
+                            <asp:DropDownList ID="goodWorkerDropDown" runat="server">
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="GaveOptionsWorkers" runat="server" ConnectionString="<%$ ConnectionStrings:ShifterManDB %>" SelectCommand="SELECT DISTINCT [Worker ID] AS Worker_ID FROM [Shift Options] WHERE ([Organization Name] = @Organization_Name)">
                                 <SelectParameters>

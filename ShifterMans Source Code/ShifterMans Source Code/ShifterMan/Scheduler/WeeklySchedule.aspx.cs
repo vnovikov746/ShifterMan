@@ -11,6 +11,8 @@ using System.Data;
 public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
 {
     bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+    WorkersList allWorkersList = new WorkersList();
+    WorkersList goodWorkersList = new WorkersList();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -18,11 +20,89 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
         {
             string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
             orgNameLabel.Text = orgName;
+            fillNamesList(orgName);
+            fillGoodWorkersList(orgName);
             fillTable(orgName);
         }
         else
         {
             Response.Redirect("~/Account/Login.aspx");
+        }
+    }
+
+    private void fillNamesList(string org_name)
+    {
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        string sql = "SELECT DISTINCT [ID], [First Name], [Last Name] FROM [Worker] WHERE [Organization Name] = '" + org_name + "'";
+        try
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+
+            SqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                Worker allWorker = new Worker(null, null, null);
+                allWorker.setWorker_ID(myReader[0].ToString().Trim());
+                allWorker.setFirst_Name(myReader[1].ToString().Trim());
+                allWorker.setLast_Name(myReader[2].ToString().Trim());
+                allWorkersList.AddWorker(allWorker);
+            }
+        }
+        catch (System.Data.SqlClient.SqlException ex)
+        {
+            string msg = "Insert Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
+
+    private void fillGoodWorkersList(string org_Name)
+    {
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        string sql = "SELECT DISTINCT [Worker ID] FROM [Shift Options] WHERE [Organization Name] = '" + org_Name + "'";
+        try
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+
+            SqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                Worker goodWorker = new Worker(null, null, null);
+                goodWorker.setWorker_ID(myReader[0].ToString().Trim());
+                goodWorkersList.AddWorker(goodWorker);
+            }
+        }
+        catch (System.Data.SqlClient.SqlException ex)
+        {
+            string msg = "Insert Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
+        }
+        finally
+        {
+            conn.Close();
+        }
+        for (int i = 0; i < allWorkersList.listSize(); i++)
+        {
+            for (int j = 0; j < goodWorkersList.listSize(); j++)
+            {
+                if (goodWorkersList.getWorkerFromList(j).getWroker_ID().Trim().Equals(allWorkersList.getWorkerFromList(i).getWroker_ID().Trim()));
+                {
+                    goodWorkersList.getWorkerFromList(j).setFirst_Name(allWorkersList.getWorkerFromList(i).getFirst_Name().Trim());
+                    goodWorkersList.getWorkerFromList(j).setLast_Name(allWorkersList.getWorkerFromList(i).getLast_Name().Trim());
+                }
+            }
+        }
+        for(int i = 0; i < goodWorkersList.listSize(); i++)
+        {
+            string item = goodWorkersList.getWorkerFromList(i).getFirst_Name() + " " + goodWorkersList.getWorkerFromList(i).getLast_Name();
+            goodWorkerDropDown.Items.Add(item);
         }
     }
 
@@ -34,11 +114,6 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
 
     private void fillTable(string org_name)
     {
-        //
-        // We Need To Add here the information about the workers
-        //
-
-
         DataTable dt = new DataTable();
 
         DataColumn dcHourDay = new DataColumn("HourDay", typeof(string));
