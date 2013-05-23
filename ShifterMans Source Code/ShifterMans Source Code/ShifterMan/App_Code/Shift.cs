@@ -24,7 +24,6 @@ public class Shift
         this.priority = priority;
     }
 
-
     public string getWroker_ID()
     {
         return this.worker_ID;

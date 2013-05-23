@@ -10,9 +10,12 @@ using System.Data;
 
 public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
 {
-    bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-    WorkersList allWorkersList = new WorkersList();
-    WorkersList goodWorkersList = new WorkersList();
+    private bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+    private WorkersList allWorkersList = new WorkersList();
+    private WorkersList goodWorkersList = new WorkersList();
+    private ShiftTable shiftOptionsTable = new ShiftTable();
+    private ShiftTable weeklyShiftTable = new ShiftTable();
+    private GenerateTable GT;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -22,6 +25,8 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             orgNameLabel.Text = orgName;
             fillNamesList(orgName);
             fillGoodWorkersList(orgName);
+            fillShiftOptionsTable(orgName);
+            fillWeeklyShiftTable(orgName);
             fillTable(orgName);
         }
         else
@@ -30,6 +35,71 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
         }
     }
 
+    private void fillShiftOptionsTable(string org_name)
+    {
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        string sql = "SELECT [Worker ID], [Day], [Begin Time], [End Time], [Organization Name], [Priority] FROM [Shift Options] WHERE [Organization Name] = '" + org_name + "'";
+        try
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+
+            SqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                Shift shiftOption = new Shift(null, null, null, null, null, null);
+                shiftOption.setWorker_ID(myReader[0].ToString().Trim());
+                shiftOption.setDay(myReader[1].ToString().Trim());
+                shiftOption.setBegin_Time(myReader[2].ToString().Trim());
+                shiftOption.setEnd_Time(myReader[3].ToString().Trim());
+                shiftOption.setOrganization(myReader[4].ToString().Trim());
+                shiftOption.setPriority(myReader[5].ToString().Trim());
+                shiftOptionsTable.AddShift(shiftOption);
+            }
+        }
+        catch (System.Data.SqlClient.SqlException ex)
+        {
+            string msg = "Insert Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
+
+    private void fillWeeklyShiftTable(string org_name)
+    {
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        string sql = "SELECT [Day], [Begin Time], [End Time] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        try
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+
+            SqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                Shift shiftInWeek = new Shift(null, null, null, null, null, null);
+                shiftInWeek.setDay(myReader[0].ToString().Trim());
+                shiftInWeek.setBegin_Time(myReader[1].ToString().Trim());
+                shiftInWeek.setEnd_Time(myReader[2].ToString().Trim());
+                weeklyShiftTable.AddShift(shiftInWeek);
+            }
+        }
+        catch (System.Data.SqlClient.SqlException ex)
+        {
+            string msg = "Insert Error:";
+            msg += ex.Message;
+            throw new Exception(msg);
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
+    
     private void fillNamesList(string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
@@ -92,7 +162,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
         {
             for (int j = 0; j < goodWorkersList.listSize(); j++)
             {
-                if (goodWorkersList.getWorkerFromList(j).getWroker_ID().Trim().Equals(allWorkersList.getWorkerFromList(i).getWroker_ID().Trim()));
+                if (goodWorkersList.getWorkerFromList(j).getWroker_ID().Trim().Equals(allWorkersList.getWorkerFromList(i).getWroker_ID().Trim()))
                 {
                     goodWorkersList.getWorkerFromList(j).setFirst_Name(allWorkersList.getWorkerFromList(i).getFirst_Name().Trim());
                     goodWorkersList.getWorkerFromList(j).setLast_Name(allWorkersList.getWorkerFromList(i).getLast_Name().Trim());
@@ -193,17 +263,14 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             }
         }
     }
-    protected void OrgNameList3_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        string org_name = e.ToString().Trim();
-        fillTable(org_name);
-    }
+
     protected void SubmitScheduleButton_Click(object sender, EventArgs e)
     {
 
     }
+
     protected void GenerateScheduleButton_Click(object sender, EventArgs e)
     {
-
+        GT = new GenerateTable(shiftOptionsTable, weeklyShiftTable);
     }
 }

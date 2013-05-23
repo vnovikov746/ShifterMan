@@ -28,6 +28,11 @@ public class ShiftTable
         shiftTable.Remove(s);
     }
 
+    public Shift getShiftFromTable(int index)
+    {
+        return shiftTable.ElementAt(index);
+    }
+
     public int tableSize()
     {
         return shiftTable.Count;

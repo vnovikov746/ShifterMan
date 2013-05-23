@@ -8,25 +8,35 @@ using System.Web;
 /// </summary>
 public class GenerateTable
 {
-	public GenerateTable()
+    private ShiftTable generatedTable;
+    private ShiftTable shiftOptionsTable;
+    private ShiftTable highPriorityShifts;
+    private ShiftTable lowPriorityShifts;
+
+    public GenerateTable(ShiftTable shiftOptionsTable, ShiftTable weeklyShifts)
 	{
-
+        this.shiftOptionsTable = shiftOptionsTable;
+        this.generatedTable = weeklyShifts;
+        divideLowOrHigh();
     }
 
-    public int add(int x, int y)
+    private void divideLowOrHigh()
     {
-        return x + y;
+        foreach (Shift shift in shiftOptionsTable.GetShifts())
+        {
+            if (shift.getPriority().Trim().Equals("Low"))
+            {
+                this.lowPriorityShifts.AddShift(shift);
+            }
+            else
+            {
+                this.highPriorityShifts.AddShift(shift);
+            }
+        }
     }
-    public int sub(int x, int y)
+
+    public void generate()
     {
-        return x - y;
+
     }
-    public int mul(int x, int y)
-    {
-        return x * y;
-    }
-    //public int secondDegree(int x)
-    //{
-    //    return x * x;
-    //}
 }
