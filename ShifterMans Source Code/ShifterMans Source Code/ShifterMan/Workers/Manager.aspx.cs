@@ -79,10 +79,11 @@ public partial class Workers_Manager : System.Web.UI.Page
         {
             conn.Close();
         }
+        fillWeeklySchedule();
     }
-    protected void OrgNameList3_SelectedIndexChanged(object sender, EventArgs e)
+
+    private void fillWeeklySchedule()
     {
-        string org_name = e.ToString().Trim();
-        fillTable(org_name);
+
     }
 }

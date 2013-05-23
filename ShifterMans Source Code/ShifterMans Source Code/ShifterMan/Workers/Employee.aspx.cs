@@ -76,5 +76,11 @@ public partial class Workers_Employee : System.Web.UI.Page
         {
             conn.Close();
         }
+        fillWeeklySchedule();
+    }
+
+    private void fillWeeklySchedule()
+    {
+
     }
 }
