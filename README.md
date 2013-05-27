@@ -36,6 +36,8 @@ __Project Stages__:
 
 - [MVP] (https://github.com/kakifish/ShifterMan/wiki/Iteration-1-MVP)
 
+- [TDD] (https://github.com/kakifish/ShifterMan/wiki/Iteration-2---TDD)
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
