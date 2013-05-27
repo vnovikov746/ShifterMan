@@ -47,6 +47,18 @@ public class ShiftTable
         return false;
     }
 
+    public bool optionExists(Shift other)
+    {
+        foreach (Shift sh in shiftTable)
+        {
+            if (sh.getWroker_ID() == other.getWroker_ID() && sh.getDay() == other.getDay() && sh.getBegin_Time() == other.getBegin_Time() && sh.getEnd_Time() == other.getEnd_Time())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public bool optionLegal(Shift option)
     {
 

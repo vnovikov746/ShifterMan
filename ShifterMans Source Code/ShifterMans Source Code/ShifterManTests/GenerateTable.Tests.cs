@@ -136,7 +136,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
             //assert
             Assert.AreEqual(schedule.GetAllShifts().Count, 1);
-            //Assert.AreEqual(schedule.optionExists(option), true);
+            Assert.AreEqual(schedule.optionExists(option), true);
 
         }
 
@@ -166,8 +166,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
             //assert
             Assert.AreEqual(schedule.GetAllShifts().Count, 2);
-            //Assert.AreEqual(schedule.optionExists(option1), true);
-            //Assert.AreEqual(schedule.optionExists(option3), true);
+            Assert.AreEqual(schedule.optionExists(option1), true);
+            Assert.AreEqual(schedule.optionExists(option3), true);
 
         }
 
@@ -197,7 +197,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
             //assert
             Assert.AreEqual(schedule.GetAllShifts().Count, 1);
-            //Assert.AreEqual(schedule.optionExists(option2), true);
+            Assert.AreEqual(schedule.optionExists(option2), true);
 
         }
     }
