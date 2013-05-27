@@ -13,6 +13,17 @@ public class WorkersList
         this.workersList = new List<Worker>();
     }
 
+    public override string ToString()
+    {
+        string s = "WORKERS LIST: \n";
+        foreach (Worker w in workersList)
+        {
+            s += "#" + workersList.IndexOf(w).ToString() + ":";
+            s += w.ToString();
+        }
+        return s;
+    }
+
     public void AddWorker(Worker w)
     {
         workersList.Add(w);

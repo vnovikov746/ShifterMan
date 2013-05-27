@@ -1,5 +1,4 @@
-﻿<%@ Page Title="Log In" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
-    CodeFile="Login.aspx.cs" Inherits="Account_Login" %>
+﻿<%@ page title="Log In" language="C#" masterpagefile="~/Site.master" autoeventwireup="true" inherits="Account_Login, ShifterMan" %>
 
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
     <style type="text/css">

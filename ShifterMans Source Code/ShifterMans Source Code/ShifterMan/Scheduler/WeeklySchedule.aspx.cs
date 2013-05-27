@@ -47,7 +47,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             SqlDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                Shift shiftOption = new Shift(null, null, null, null, null, null, null);
+                Shift shiftOption = new Shift(null, null, null, null, null, null, null, null);
                 shiftOption.setWorker_ID(myReader[0].ToString().Trim());
                 shiftOption.setDay(myReader[1].ToString().Trim());
                 shiftOption.setBegin_Time(myReader[2].ToString().Trim());
@@ -82,7 +82,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             SqlDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                Shift shiftInWeek = new Shift(null, null, null, null, null, null, null);
+                Shift shiftInWeek = new Shift(null, null, null, null, null, null, null, null);
                 shiftInWeek.setDay(myReader[0].ToString().Trim());
                 shiftInWeek.setBegin_Time(myReader[1].ToString().Trim());
                 shiftInWeek.setEnd_Time(myReader[2].ToString().Trim());

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 public class Shift
 {
     private string worker_ID;
+    private string name;
     private string day;
     private string begin_Time;
     private string end_Time;
@@ -15,9 +16,10 @@ public class Shift
     private string week;
     private string numOfWorkers;
 
-    public Shift(string worker_ID, string day, string begin_Time, string end_Time, string organization, string priority, string numOfWorkers)
+    public Shift(string worker_ID, string name, string day, string begin_Time, string end_Time, string organization, string priority, string numOfWorkers)
     {
         this.worker_ID = worker_ID;
+        this.name = name;
         this.day = day;
         this.begin_Time = begin_Time;
         this.end_Time = end_Time;
@@ -26,6 +28,29 @@ public class Shift
         this.numOfWorkers = numOfWorkers;
     }
 
+    public override string ToString()
+    {
+        string s = "SHIFT";
+        s += " id: " + worker_ID;
+        s += " name: " + name;
+        s += " day: " + day;
+        s += " begin time: " + begin_Time;
+        s += " end time: " + end_Time;
+        s += " org: " + organization;
+        s += " priority: " + priority;
+        s += " week: " + week;
+        s += " num of workers: " + numOfWorkers;
+        return s;
+    }
+
+    public string getName()
+    {
+        return this.name;
+    }
+    public void setName(string name)
+    {
+        this.name = name;
+    }
     public string getWroker_ID()
     {
         return this.worker_ID;

@@ -17,6 +17,15 @@ public class Worker
         this.last_Name = last_Name;
     }
 
+    public override string ToString() 
+    {
+        string s = "WORKER";
+        s += " id: " + worker_ID;
+        s += " name: " + first_Name;
+        s += " last name: " + last_Name;
+        return s;
+    }
+
     public string getWroker_ID()
     {
         return this.worker_ID;
