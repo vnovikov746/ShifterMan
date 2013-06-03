@@ -16,6 +16,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
     private ShiftTable shiftOptionsTable = new ShiftTable();
     private ShiftTable weeklyShiftTable = new ShiftTable();
     private GenerateTable GT;
+    bool[,] selectedIndexes;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -28,10 +29,25 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             fillShiftOptionsTable(orgName);
             fillWeeklyShiftTable(orgName);
             fillTable(orgName);
+            fillSelectedIndexes();
         }
         else
         {
             Response.Redirect("~/Account/Login.aspx");
+        }
+    }
+
+    private void fillSelectedIndexes()
+    {
+        int rows = WeeklyScheduleGrid.Rows.Count;
+        int col = WeeklyScheduleGrid.Columns.Count-1;
+        this.selectedIndexes = new bool[rows,col];
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                this.selectedIndexes[i, j] = false;
+            }
         }
     }
 
@@ -72,8 +88,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
     private void fillWeeklyShiftTable(string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
-        SqlConnection conn2 = new SqlConnection(getConnectionString());
-        string sql = "SELECT DISTINCT [Day], [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        string sql = "SELECT [Day], [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
         try
         {
             conn.Open();
@@ -82,12 +97,14 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             SqlDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                Shift shiftInWeek = new Shift(null, null, null, null, null, null, null, null);
-                shiftInWeek.setDay(myReader[0].ToString().Trim());
-                shiftInWeek.setBegin_Time(myReader[1].ToString().Trim());
-                shiftInWeek.setEnd_Time(myReader[2].ToString().Trim());
-                shiftInWeek.setNumOfWorkers(myReader[3].ToString().Trim());
-                weeklyShiftTable.AddShift(shiftInWeek);
+                for(int i = 0; i < Convert.ToInt32(myReader[3]); i++)
+                {
+                    Shift shiftInWeek = new Shift(null, null, null, null, null, null, null, null);
+                    shiftInWeek.setDay(myReader[0].ToString().Trim());
+                    shiftInWeek.setBegin_Time(myReader[1].ToString().Trim());
+                    shiftInWeek.setEnd_Time(myReader[2].ToString().Trim());
+                    weeklyShiftTable.AddShift(shiftInWeek);
+                }
             }
         }
         catch (System.Data.SqlClient.SqlException ex)
@@ -99,7 +116,6 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
         finally
         {
             conn.Close();
-            conn2.Close();
         }
     }
     
@@ -241,7 +257,6 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
                 {
                     workers.Items.Add(new ListItem(allWorkersList.getWorkerFromList(k).getFirst_Name() + " " + allWorkersList.getWorkerFromList(k).getLast_Name()));
                     k++;
-
                 }
                 WeeklyScheduleGrid.Rows[i].Cells[j].Controls.Add(workers);
                 Random ran = new Random(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
@@ -259,5 +274,53 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
     protected void GenerateScheduleButton_Click(object sender, EventArgs e)
     {
         GT = new GenerateTable(shiftOptionsTable, weeklyShiftTable);
+        weeklyShiftTable = GT.GenerateSchedule();
+        setNames();
+        foreach (Shift sh in weeklyShiftTable.GetAllShifts())
+        {
+            string day = sh.getDay().Trim();
+            string begin = sh.getBegin_Time().Trim();
+            string name = sh.getName().Trim();
+            for(int i = 1; i < WeeklyScheduleGrid.Columns.Count; i++)
+            {
+                if (day.Equals(WeeklyScheduleGrid.Columns[i].HeaderText.Trim()))
+                {
+                    for (int j = 0; j < WeeklyScheduleGrid.Rows.Count; j++)
+                    {
+                        if (WeeklyScheduleGrid.Rows[j].Cells[0].Text.Split('-')[0].Trim().Equals(begin))
+                        {
+                            if (selectedIndexes[j, i] != true)
+                            {
+                                for (int k = 0; k < ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).Items.Count; k++)
+                                {
+                                    if (((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).Items[k].Text.Trim().Equals(name) && ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).ForeColor != System.Drawing.Color.Red)
+                                    {
+                                        ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).SelectedIndex = k;
+                                        ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).ForeColor = System.Drawing.Color.Red;
+                                        selectedIndexes[j, i] = true;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void setNames()
+    {
+        for (int i = 0; i < weeklyShiftTable.tableSize(); i++ )
+        {
+            for (int j = 0; j < goodWorkersList.listSize(); j++)
+            {
+                if (weeklyShiftTable.getShiftFromTable(i).getWroker_ID().Trim().Equals(goodWorkersList.getWorkerFromList(j).getWroker_ID().Trim()))
+                {
+                    weeklyShiftTable.getShiftFromTable(i).setName(goodWorkersList.getWorkerFromList(j).getFirst_Name().Trim() + " " + goodWorkersList.getWorkerFromList(j).getLast_Name().Trim());
+                }
+            }
+        }
     }
 }

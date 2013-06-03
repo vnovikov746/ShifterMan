@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 //namespace GenerateTable.Tests
 //{
     [TestClass]
-    public class UnitTest
+    public class GenerateTableTests
     {
         [TestMethod]
-        public void ShiftExistTest()
+        public void shiftExistTest()
         {
             //arrange
             Shift s1 = new Shift("", "", "Sunday", "7", "15", "", "", "");
@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             //act
             bool result = t1.shiftExists("Sunday", "7", "15");
             //assert
-            Assert.AreEqual(result, true);
+            Assert.AreEqual(result, true, "shiftExistTest error: Shift Doe's not exist in DB");
             
         }
 
@@ -31,11 +31,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             //act
             bool result = t1.shiftExists("Sunday", "7", "15");
             //assert
-            Assert.AreEqual(result, false);
+            Assert.AreEqual(result, false, "ShiftExistNegativeTest: Shift EXIST in DB");
         }
 
         [TestMethod]
-        public void DivideLowOrHighTest()
+        public void divideLowOrHighTest()
         {
             //arrange
             Shift s1 = new Shift("", "", "Sunday", "7", "15", "", "High", "");
@@ -50,8 +50,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             bool result_low = low.shiftExists("Thursday", "23", "3");
             bool result_high = high.shiftExists("Sunday", "7", "15");
             //assert
-            Assert.AreEqual(result_low, true);
-            Assert.AreEqual(result_high, true);
+            Assert.AreEqual(result_low, false, "divideLowOrHighTest error: the shift is high priotity, expected low");
+            Assert.AreEqual(result_high, true, "divideLowOrHighTest error: the shift is low priotity, expected high");
 
         }
 
@@ -71,8 +71,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             bool result_low = low.shiftExists("Sunday", "7", "15");
             bool result_high = high.shiftExists("Thursday", "23", "3");
             //assert
-            Assert.AreEqual(result_low, false);
-            Assert.AreEqual(result_high, false);
+            Assert.AreEqual(result_low, false, "divideLowOrHighNegativeTest error: the shift is low priotity, expected high");
+            Assert.AreEqual(result_high, false, "divideLowOrHighNegativeTest error: the shift is high priotity, expected low");
 
         }
 
@@ -87,7 +87,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             //act
             bool result = schedule.optionLegal(option);
             //assert
-            Assert.AreEqual(result, true);
+            Assert.AreEqual(result, true, "OptionLegalTest1_differentHour error: the hours are not similar");
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             //act
             bool result = schedule.optionLegal(option);
             //assert
-            Assert.AreEqual(result, true);
+            Assert.AreEqual(result, true, "OptionLegalTest2_differentID error: the IDs are not similar");
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             //act
             bool result = schedule.optionLegal(option);
             //assert
-            Assert.AreEqual(result, false);
+            Assert.AreEqual(result, false, "OptionLegalNegativeTest_sameHour error: the hours are similar");
         }
 
         [TestMethod]
@@ -135,8 +135,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             ShiftTable schedule = generator.GenerateSchedule();
 
             //assert
-            Assert.AreEqual(schedule.GetAllShifts().Count, 1);
-            Assert.AreEqual(schedule.optionExists(option),true);
+            Assert.AreEqual(schedule.GetAllShifts().Count, 1, "GenerateScheduleSimpleTest1 error: the number of shift do not mach expectation");
+            Assert.AreEqual(schedule.optionExists(option),true, "GenerateScheduleSimpleTest1 error: the option do not exists");
 
         }
 
@@ -165,9 +165,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             ShiftTable schedule = generator.GenerateSchedule();
 
             //assert
-            Assert.AreEqual(schedule.GetAllShifts().Count, 2);
-            Assert.AreEqual(schedule.optionExists(option1), true);
-            Assert.AreEqual(schedule.optionExists(option3), true);
+            Assert.AreEqual(schedule.GetAllShifts().Count, 2, "GenerateScheduleSimpleTest2 error: the number of shift do not mach expectation");
+            Assert.AreEqual(schedule.optionExists(option1), true, "GenerateScheduleSimpleTest2 error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option3), true, "GenerateScheduleSimpleTest2 error: the option do not exists");
 
         }
 
@@ -196,13 +196,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             ShiftTable schedule = generator.GenerateSchedule();
 
             //assert
-            Assert.AreEqual(schedule.GetAllShifts().Count, 1);
-            Assert.AreEqual(schedule.optionExists(option2), true);
+            Assert.AreEqual(schedule.GetAllShifts().Count, 1, "GenerateSchedulePriorityTest error: the number of shift do not mach expectation");
+            Assert.AreEqual(schedule.optionExists(option2), true, "GenerateSchedulePriorityTest error: the option do not exists");
 
         }
 
         [TestMethod]
-        public void GenerateScheduleComplexTest()
+        public void GenerateScheduleTest()
         {
             //arrange
             ShiftTable shifts = new ShiftTable();
@@ -270,14 +270,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             ShiftTable schedule = generator.GenerateSchedule();
 
             //assert
-            Assert.AreEqual(schedule.GetAllShifts().Count, 7);
-            Assert.AreEqual(schedule.optionExists(option2), true);
-            Assert.AreEqual(schedule.optionExists(option4), true);
-            Assert.AreEqual(schedule.optionExists(option5), true);
-            Assert.AreEqual(schedule.optionExists(option6), true);
-            Assert.AreEqual(schedule.optionExists(option10), true);
-            Assert.AreEqual(schedule.optionExists(option12), true);
-            Assert.AreEqual(schedule.optionExists(option14), true);
+            Assert.AreEqual(schedule.GetAllShifts().Count, 7, "GenerateScheduleTest error: the number of shift do not mach expectation");
+            Assert.AreEqual(schedule.optionExists(option2), true, "GenerateScheduleTest error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option4), true, "GenerateScheduleTest error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option5), true, "GenerateScheduleTest error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option6), true, "GenerateScheduleTest error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option10), true, "GenerateScheduleTest error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option12), true, "GenerateScheduleTest error: the option do not exists");
+            Assert.AreEqual(schedule.optionExists(option14), true, "GenerateScheduleTest error: the option do not exists");
 
         }
 

@@ -62,8 +62,8 @@ public class ShiftTable
     public bool optionLegal(Shift option)
     {
 
-        int optBeginHour = Convert.ToInt32(option.getBegin_Time());
-        int optEndHour = Convert.ToInt32(option.getEnd_Time());
+        int optBeginHour = Convert.ToInt32(option.getBegin_Time().Trim().Split(':')[0]);
+        int optEndHour = Convert.ToInt32(option.getEnd_Time().Trim().Split(':')[0]);
         string optBeginDay = option.getDay();
         string optEndDay = option.getDay();
 
@@ -91,8 +91,8 @@ public class ShiftTable
         {
             if (sh.getWroker_ID() == option.getWroker_ID())
             {
-                int shBeginHour = Convert.ToInt32(sh.getBegin_Time());
-                int shEndHour = Convert.ToInt32(sh.getEnd_Time());
+                int shBeginHour = Convert.ToInt32(sh.getBegin_Time().Trim().Split(':')[0]);
+                int shEndHour = Convert.ToInt32(sh.getEnd_Time().Trim().Split(':')[0]);
                 string shBeginDay = sh.getDay();
                 string shEndDay = sh.getDay();
 
