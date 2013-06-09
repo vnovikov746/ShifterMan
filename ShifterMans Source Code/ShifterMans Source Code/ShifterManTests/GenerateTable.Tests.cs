@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
             //act
             bool result = t1.shiftExists("Sunday", "7", "15");
             //assert
-            Assert.AreEqual(result, true, "shiftExistTest error: Shift Doe's not exist in DB");
+            Assert.AreEqual(result, true, "shiftExistTest error: Shift Does not exist in DB");
             
         }
 
