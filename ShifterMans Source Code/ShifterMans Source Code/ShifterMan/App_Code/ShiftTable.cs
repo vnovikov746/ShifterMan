@@ -9,7 +9,6 @@ public class ShiftTable
     private List<Shift> shiftTable;
     public const int MINIMUM_REST_TIME = 8;
     public const int DAY_HOURS = 24;
-    public const int MAX_WORK_HOURS_PER_WEEK = 48;
 
     public ShiftTable()
     {
@@ -62,11 +61,6 @@ public class ShiftTable
 
     public bool optionLegal(Shift option)
     {
-        if (checkMaxHoursExceeded(option))
-        {
-            return false;
-        }
-
 
         int optBeginHour = Convert.ToInt32(option.getBegin_Time().Trim().Split(':')[0]);
         int optEndHour = Convert.ToInt32(option.getEnd_Time().Trim().Split(':')[0]);
@@ -164,32 +158,6 @@ public class ShiftTable
         }
         return true;
     } //public bool optionLegal(Shift option) ...
-
-    private int countWorkersHours(string worker_ID)
-    {
-        int totalHours = 0;
-        foreach (Shift sh in shiftTable)
-        {
-            if (sh.getWroker_ID() == worker_ID)
-            {
-                totalHours += sh.getShiftHours();
-            }
-        }
-
-        return totalHours;
-    } //private int countWorkersHours(string worker_ID) ...
-
-    private bool checkMaxHoursExceeded(Shift option)
-    {
-        int totalHours = countWorkersHours(option.getWroker_ID());
-        int optionHours = option.getShiftHours();
-        if (totalHours + optionHours > MAX_WORK_HOURS_PER_WEEK)
-        {
-            return true;
-        }
-        return false;
-
-    } //private bool checkMaxHoursExceeded(Shift option) ...
 
     public string getNextDay(string Day)
     {
