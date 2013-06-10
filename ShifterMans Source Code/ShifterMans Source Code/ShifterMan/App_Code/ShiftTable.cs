@@ -9,6 +9,7 @@ public class ShiftTable
     private List<Shift> shiftTable;
     public const int MINIMUM_REST_TIME = 8;
     public const int DAY_HOURS = 24;
+    public const int MAX_WORK_HOURS_PER_WEEK = 48;
 
     public ShiftTable()
     {
@@ -18,7 +19,7 @@ public class ShiftTable
     public ShiftTable(ShiftTable other)
     {
         this.shiftTable = new List<Shift>();
-        foreach(Shift sh in other.GetAllShifts())
+        foreach (Shift sh in other.GetAllShifts())
         {
             this.shiftTable.Add(sh);
         }
@@ -61,6 +62,11 @@ public class ShiftTable
 
     public bool optionLegal(Shift option)
     {
+        if (checkMaxHoursExceeded(option))
+        {
+            return false;
+        }
+
 
         int optBeginHour = Convert.ToInt32(option.getBegin_Time().Trim().Split(':')[0]);
         int optEndHour = Convert.ToInt32(option.getEnd_Time().Trim().Split(':')[0]);
@@ -152,23 +158,49 @@ public class ShiftTable
                 {
                     return false;
                 }
-                
+
             }
 
         }
         return true;
     } //public bool optionLegal(Shift option) ...
 
+    private int countWorkersHours(string worker_ID)
+    {
+        int totalHours = 0;
+        foreach (Shift sh in shiftTable)
+        {
+            if (sh.getWroker_ID() == worker_ID)
+            {
+                totalHours += sh.getShiftHours();
+            }
+        }
+
+        return totalHours;
+    } //private int countWorkersHours(string worker_ID) ...
+
+    private bool checkMaxHoursExceeded(Shift option)
+    {
+        int totalHours = countWorkersHours(option.getWroker_ID());
+        int optionHours = option.getShiftHours();
+        if (totalHours + optionHours > MAX_WORK_HOURS_PER_WEEK)
+        {
+            return true;
+        }
+        return false;
+
+    } //private bool checkMaxHoursExceeded(Shift option) ...
+
     public string getNextDay(string Day)
     {
         switch (Day)
         {
-            case "Sunday":      return "Monday";
-            case "Monday":      return "Tuesday";
-            case "Tuesday":     return "Wednesday";
-            case "Wednesday":   return "Thursday";
-            case "Thursday":    return "Friday";
-            case "Friday":      return "Saturday"; 
+            case "Sunday": return "Monday";
+            case "Monday": return "Tuesday";
+            case "Tuesday": return "Wednesday";
+            case "Wednesday": return "Thursday";
+            case "Thursday": return "Friday";
+            case "Friday": return "Saturday";
         }
         return ""; //need to deal with next week
     }
@@ -197,7 +229,7 @@ public class ShiftTable
         List<Shift> result = new List<Shift>();
         foreach (Shift sh in shiftTable)
         {
-            Shift newShift = new Shift(sh.getWroker_ID(),sh.getName(),sh.getDay(),sh.getBegin_Time(),sh.getEnd_Time(),sh.getOrganization(),sh.getPriority(),sh.getNumOfWorkers());
+            Shift newShift = new Shift(sh.getWroker_ID(), sh.getName(), sh.getDay(), sh.getBegin_Time(), sh.getEnd_Time(), sh.getOrganization(), sh.getPriority(), sh.getNumOfWorkers());
             result.Add(newShift);
         }
         return result;

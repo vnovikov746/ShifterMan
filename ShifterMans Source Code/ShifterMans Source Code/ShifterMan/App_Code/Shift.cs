@@ -43,6 +43,21 @@ public class Shift
         return s;
     }
 
+    public int getShiftHours()
+    {
+        int begin_Time = Convert.ToInt32(this.begin_Time.Trim().Split(':')[0]);
+        int end_Time = Convert.ToInt32(this.end_Time.Trim().Split(':')[0]);
+
+        if (begin_Time <= end_Time)
+        {
+            return end_Time - begin_Time;
+        }
+        else
+        {
+            return (24 - begin_Time) + end_Time;
+        }
+    }
+
     public string getName()
     {
         return this.name;
@@ -73,7 +88,7 @@ public class Shift
     }
     public void setBegin_Time(string begin_Time)
     {
-       this.begin_Time = begin_Time;
+        this.begin_Time = begin_Time;
     }
     public string getEnd_Time()
     {
@@ -81,11 +96,11 @@ public class Shift
     }
     public void setEnd_Time(string end_Time)
     {
-       this.end_Time = end_Time;
+        this.end_Time = end_Time;
     }
     public string getOrganization()
     {
-       return this.organization;
+        return this.organization;
     }
     public void setOrganization(string organization)
     {
