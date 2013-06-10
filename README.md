@@ -38,6 +38,8 @@ __Project Stages__:
 
 - [TDD] (https://github.com/kakifish/ShifterMan/wiki/Iteration-2---TDD)
 
+- [Refactoring] (https://github.com/kakifish/ShifterMan/wiki/Iteration-3---Refactoring)
+
 ## Development Documentation for ShifterMan:
 
 ### How to get the code?
