@@ -4,28 +4,6 @@ using System.Linq;
 using System.Web;
 
 
-    //Input:
-  
-    //1. shiftOptionsTable  
-    //"SELECT [Worker ID], [Day], [Begin Time], [End Time], [Organization Name], [Priority] FROM [Shift Options] WHERE [Organization Name] 
-    //private string worker_ID;
-    //private string day;
-    //private string begin_Time;
-    //private string end_Time;
-    //private string organization;
-    //private string priority;
-
-    //2. weeklyShifts
-    //"SELECT DISTINCT [Day], [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] 
-
-    //3. workersList
-    //"SELECT DISTINCT [ID], [First Name], [Last Name] FROM [Worker] WHERE [Organization Name]
-
-    //Output:
-    
-    //1. weeklySchedule
-
-
 public class GenerateTable
 {
     private ShiftTable shiftOptionsTable;
@@ -33,6 +11,7 @@ public class GenerateTable
 
     private ShiftTable highPriorityOptions;
     private ShiftTable lowPriorityOptions;
+
 
 
     public GenerateTable(ShiftTable shiftOptionsTable, ShiftTable weeklyShifts)
@@ -54,17 +33,42 @@ public class GenerateTable
         return schedule;
     }
 
+    private void GenerateScheduleRandomPass(ShiftTable OptionsTable, ShiftTable weeklyShifts, ShiftTable schedule)
+    {
+        Random rnd = new Random();
+        int optionsNum = OptionsTable.tableSize();
+        while (optionsNum > 0)
+        {
+            int i = rnd.Next(0, optionsNum);
+            Shift option = OptionsTable.getShiftFromTable(i);
 
-    public ShiftTable GenerateSchedule(ShiftTable OptionsTable, ShiftTable schedule)
+            if (weeklyShifts.shiftExists(option.getDay(), option.getBegin_Time(), option.getEnd_Time()))
+            {
+                if (schedule.optionLegal(option))
+                {
+                    schedule.AddShift(option);
+                    weeklyShifts.RemoveShift(option.getDay(), option.getBegin_Time(), option.getEnd_Time());
+                }
+            }
+            OptionsTable.RemoveShift(option);
+            optionsNum--;
+        } //while (optionsNum > 0)...
+
+    } //private ShiftTable GenerateScheduleRandomPass(ShiftTable OptionsTable, ShiftTable weeklyShifts, ShiftTable schedule) ... 
+
+
+    private ShiftTable GenerateSchedule(ShiftTable OptionsTable, ShiftTable schedule)
     {
         ShiftTable weeklyShifts = new ShiftTable(this.weeklyShifts);
+
+        GenerateScheduleRandomPass(OptionsTable, weeklyShifts, schedule);
 
         bool done = false;
         bool shiftAdded = false;
         
 
         int optionsNum = OptionsTable.tableSize();
-        int shiftsNum = weeklyShifts.tableSize();
+
 
         while (!done)
         {
@@ -80,7 +84,7 @@ public class GenerateTable
                         OptionsTable.RemoveShift(option);
                         optionsNum--;
                         weeklyShifts.RemoveShift(option.getDay(), option.getBegin_Time(), option.getEnd_Time());
-                        shiftsNum--;
+
                         shiftAdded = true;
                         break;
                     }

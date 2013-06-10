@@ -43,6 +43,21 @@ public class Shift
         return s;
     }
 
+    public int getShiftHours()
+    {
+        int begin_Time = Convert.ToInt32(this.begin_Time.Trim().Split(':')[0]);
+        int end_Time = Convert.ToInt32(this.end_Time.Trim().Split(':')[0]);
+
+        if (begin_Time <= end_Time)
+        {
+            return end_Time - begin_Time;
+        }
+        else
+        {
+            return (24 - begin_Time) + end_Time;
+        }
+    }
+
     public string getName()
     {
         return this.name;
