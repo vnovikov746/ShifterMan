@@ -16,15 +16,39 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
     private ShiftTable shiftOptionsTable = new ShiftTable();
     private ShiftTable weeklyShiftTable = new ShiftTable();
     private GenerateTable GT;
-    bool[,] selectedIndexes;
+    private bool[,] selectedIndexes;
+    private string orgName;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (isLogged)
         {
-            string orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
+            orgName = System.Web.HttpContext.Current.User.Identity.Name.Split(' ')[0].Trim();
             orgNameLabel.Text = orgName;
-            fillNamesList(orgName);
+
+            SqlConnection conn = new SqlConnection(getConnectionString());
+            string sql = "UPDATE [Shift Schedule] SET [Worker ID] = 'NULL' WHERE [Organization Name] = '" + orgName + "'";
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                string msg = "Insert Error:";
+                msg += ex.Message;
+                throw new Exception(msg);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            fillAllWorkersList(orgName);
             fillGoodWorkersList(orgName);
             fillShiftOptionsTable(orgName);
             fillWeeklyShiftTable(orgName);
@@ -40,7 +64,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
     private void fillSelectedIndexes()
     {
         int rows = WeeklyScheduleGrid.Rows.Count;
-        int col = WeeklyScheduleGrid.Columns.Count-1;
+        int col = WeeklyScheduleGrid.Columns.Count;
         this.selectedIndexes = new bool[rows,col];
         for (int i = 0; i < rows; i++)
         {
@@ -118,8 +142,8 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             conn.Close();
         }
     }
-    
-    private void fillNamesList(string org_name)
+
+    private void fillAllWorkersList(string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
         string sql = "SELECT DISTINCT [ID], [First Name], [Last Name] FROM [Worker] WHERE [Organization Name] = '" + org_name + "'";
@@ -268,7 +292,50 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
 
     protected void SubmitScheduleButton_Click(object sender, EventArgs e)
     {
+        ShiftTable final = new ShiftTable();
+        SqlConnection conn = new SqlConnection(getConnectionString());
+        for (int i = 0; i < WeeklyScheduleGrid.Rows.Count; i++)
+        {
+            for (int j = 1; j < WeeklyScheduleGrid.Columns.Count; j++)
+            {
+                String day = WeeklyScheduleGrid.Columns[j].HeaderText.Trim();
+                String begin = WeeklyScheduleGrid.Rows[i].Cells[0].Text.Split('-')[0].Trim();
+                String end = WeeklyScheduleGrid.Rows[i].Cells[0].Text.Split('-')[1].Trim();
+                String name = ((DropDownList) (WeeklyScheduleGrid.Rows[i].Cells[j].Controls[0])).SelectedItem.Text.Trim();
+                String ID = null;
+                
+                for (int k = 0; k < allWorkersList.listSize(); k++)
+                {
+                    if (allWorkersList.getWorkerFromList(k).getFirst_Name().Trim().Equals(name.Split(' ')[0].Trim()))
+                    {
+                        ID = allWorkersList.getWorkerFromList(k).getWroker_ID();
+                    }
+                }
+                string sql = "SET ROWCOUNT 1; UPDATE [Shift Schedule] SET [Worker ID] = '" + ID + "' WHERE [Organization Name] = '" + orgName + "' AND [Day] = '" + day + "' AND [Begin Time] = '" + begin + "' AND [End Time] = '" + end + "' AND [Worker ID] = 'NULL'";
+                //Shift shift = new Shift(ID, name, day, begin, end, orgName, null, null);
+                //final.AddShift(shift);
 
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    string msg = "Insert Error:";
+                    msg += ex.Message;
+                    throw new Exception(msg);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+        Response.Redirect("~/Workers/Manager.aspx");
     }
 
     protected void GenerateScheduleButton_Click(object sender, EventArgs e)
@@ -281,32 +348,50 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             string day = sh.getDay().Trim();
             string begin = sh.getBegin_Time().Trim();
             string name = sh.getName().Trim();
-            for(int i = 1; i < WeeklyScheduleGrid.Columns.Count; i++)
+            int index = 0;
+            switch (day)
             {
-                if (day.Equals(WeeklyScheduleGrid.Columns[i].HeaderText.Trim()))
+                case "Sunday":
+                    index = 1;
+                    break;
+                case "Monday":
+                    index = 2;
+                    break;
+                case "Tusday":
+                    index = 3;
+                    break;
+                case "Wednsday":
+                    index = 4;
+                    break;
+                case "Thursday":
+                    index = 5;
+                    break;
+                case "Friday":
+                    index = 6;
+                    break;
+                case "Saturday":
+                    index = 7;
+                    break;
+            }
+            int j;
+            int k;
+            for (j = 0; j < WeeklyScheduleGrid.Rows.Count; j++)
+            {
+                if (!WeeklyScheduleGrid.Rows[j].Cells[0].Text.Split('-')[0].Trim().Equals(begin)) continue;
+                if (!selectedIndexes[j, index])
                 {
-                    for (int j = 0; j < WeeklyScheduleGrid.Rows.Count; j++)
-                    {
-                        if (WeeklyScheduleGrid.Rows[j].Cells[0].Text.Split('-')[0].Trim().Equals(begin))
-                        {
-                            if (selectedIndexes[j, i] != true)
-                            {
-                                for (int k = 0; k < ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).Items.Count; k++)
-                                {
-                                    if (((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).Items[k].Text.Trim().Equals(name) && ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).ForeColor != System.Drawing.Color.Red)
-                                    {
-                                        ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).SelectedIndex = k;
-                                        ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[i].Controls[0]).ForeColor = System.Drawing.Color.Red;
-                                        selectedIndexes[j, i] = true;
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                            break;
-                        }
-                    }
+                    break;
                 }
+            }
+            for (k = 0;
+                 k < ((DropDownList) WeeklyScheduleGrid.Rows[j].Cells[index].Controls[0]).Items.Count;
+                 k++)
+            {
+                if (!((DropDownList) WeeklyScheduleGrid.Rows[j].Cells[index].Controls[0]).Items[k].Text.Trim().Equals(name))continue;
+                ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[index].Controls[0]).SelectedIndex = k;
+                ((DropDownList)WeeklyScheduleGrid.Rows[j].Cells[index].Controls[0]).ForeColor = System.Drawing.Color.DeepPink;
+                selectedIndexes[j, index] = true;
+                break;
             }
         }
     }

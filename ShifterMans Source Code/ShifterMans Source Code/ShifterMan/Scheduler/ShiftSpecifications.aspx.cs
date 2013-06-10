@@ -70,7 +70,10 @@ public partial class Scheduler_ShiftSpecifications : System.Web.UI.Page
             if (DayList.Items[i].Selected)
             {
                 string day = DayList.Items[i].Text.Trim();
-                addShift(day, begin, end, info, org_name);
+                for (int j = 0; j < Convert.ToInt32(info); j++)
+                {
+                    addShift(day, begin, end, info, org_name);
+                }
             }
         }
         Response.Redirect("~/Scheduler/ShiftSpecifications.aspx");
