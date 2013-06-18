@@ -1,4 +1,7 @@
 //Need to add comments to the methods
+//Need to take out the SQL from the for notation.
+//Need to use try/catch notation only in the places needed. 
+
 
 using System;
 using System.Collections.Generic;
@@ -32,9 +35,23 @@ public partial class Workers_Employee : System.Web.UI.Page
     }
 
     private void fillWeeklyShiftTable(string org_name)
+    
+    
+    
+    //TO-DO:take sql from the code
+    
+
+    
+    
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
         string sql = "SELECT [Day], [Begin Time], [End Time], [Shift Info], [Worker ID] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        
+        
+        //TO-DO:use try/catch statement on the places needed only
+        
+        
+        
         try
         {
             conn.Open();
