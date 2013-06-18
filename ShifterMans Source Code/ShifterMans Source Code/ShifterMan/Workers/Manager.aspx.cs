@@ -1,4 +1,14 @@
-﻿using System;
+
+//Follow the (white rabbit) issues by the numbers.
+
+// #1  Need to add comments to the methods
+// #2  Need to take out the SQL from the for notation.
+// #3  Need to use try/catch notation only in the places needed. 
+
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +18,9 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
-public partial class Workers_Manager : System.Web.UI.Page
+
+// #1
+public partial class Workers_Manager : System.Web.UI.Page 
 {
     bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
     private ShiftTable weeklyShiftTable = new ShiftTable();
@@ -28,11 +40,12 @@ public partial class Workers_Manager : System.Web.UI.Page
             Response.Redirect("~/Account/Login.aspx");
         }
     }
-
+    //#1
     private void fillWeeklyShiftTable(string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
         string sql = "SELECT [Day], [Begin Time], [End Time], [Shift Info], [Worker ID] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        //#3
         try
         {
             conn.Open();
@@ -54,6 +67,7 @@ public partial class Workers_Manager : System.Web.UI.Page
             {
                 for (int i = 0; i < weeklyShiftTable.tableSize(); i++)
                 {
+                    //#2
                     sql = "SELECT [First Name], [Last Name] FROM [Worker] WHERE [Organization Name] = '" + org_name + "' AND [ID] = '" + weeklyShiftTable.getShiftFromTable(i).getWroker_ID() + "'";
                     cmd = new SqlCommand(sql, conn);
                     myReader = cmd.ExecuteReader();
@@ -74,13 +88,13 @@ public partial class Workers_Manager : System.Web.UI.Page
             conn.Close();
         }
     }
-
+    //#1
     private string getConnectionString()
     {
         //sets the connection string from your web config file "ConnString" is the name of your Connection String
         return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
     }
-
+    //#1
     private void fillTable(string org_name)
     {
         //
@@ -101,6 +115,7 @@ public partial class Workers_Manager : System.Web.UI.Page
 
         SqlConnection conn = new SqlConnection(getConnectionString());
         string sql = "SELECT DISTINCT [Begin Time], [End Time], [Shift Info] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
+        //#3
         try
         {
             conn.Open();
@@ -131,7 +146,7 @@ public partial class Workers_Manager : System.Web.UI.Page
         }
         fillWeeklySchedule();
     }
-
+    //#1
     private void fillWeeklySchedule()
     {
         int index = 0;
