@@ -1,7 +1,6 @@
-//Need to add comments to the methods
+﻿//Need to add comments to the methods
 //Need to take out the SQL from the for notation.
 //Need to use try/catch notation only in the places needed. 
-
 
 using System;
 using System.Collections.Generic;
@@ -35,29 +34,19 @@ public partial class Workers_Employee : System.Web.UI.Page
     }
 
     private void fillWeeklyShiftTable(string org_name)
-    
-    
-    
-    //TO-DO:take sql from the code
-    
-
-    
-    
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
         string sql = "SELECT [Day], [Begin Time], [End Time], [Shift Info], [Worker ID] FROM [Shift Schedule] WHERE [Organization Name] = '" + org_name + "'";
-        
-        
-        //TO-DO:use try/catch statement on the places needed only
-        
-        
-        
         try
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand(sql, conn);
 
             SqlDataReader myReader = cmd.ExecuteReader();
+            if (!myReader.HasRows)
+            {
+                return;
+            }
             while (myReader.Read())
             {
                 Shift shiftInWeek = new Shift(null, null, null, null, null, null, null, null);
@@ -71,14 +60,18 @@ public partial class Workers_Employee : System.Web.UI.Page
             myReader.Close();
             if (weeklyShiftTable.getShiftFromTable(0).getWroker_ID() != null && weeklyShiftTable.getShiftFromTable(0).getWroker_ID() != "NULL")
             {
-                for (int i = 0; i < weeklyShiftTable.tableSize(); i++)
+                sql = "SELECT [ID], [First Name], [Last Name] FROM [Worker] WHERE [Organization Name] = '" + org_name + "'";
+                cmd = new SqlCommand(sql, conn);
+                myReader = cmd.ExecuteReader();
+                while (myReader.Read())
                 {
-                    sql = "SELECT [First Name], [Last Name] FROM [Worker] WHERE [Organization Name] = '" + org_name + "' AND [ID] = '" + weeklyShiftTable.getShiftFromTable(i).getWroker_ID() + "'";
-                    cmd = new SqlCommand(sql, conn);
-                    myReader = cmd.ExecuteReader();
-                    myReader.Read();
-                    weeklyShiftTable.getShiftFromTable(i).setName(myReader[0].ToString().Trim() + " " + myReader[1].ToString().Trim());
-                    myReader.Close();
+                    for (int i = 0; i < weeklyShiftTable.tableSize(); i++)
+                    {
+                        if (weeklyShiftTable.getShiftFromTable(i).getWroker_ID().Equals(myReader[0].ToString().Trim()))
+                        {
+                            weeklyShiftTable.getShiftFromTable(i).setName(myReader[1].ToString().Trim() + " " + myReader[2].ToString().Trim());
+                        }
+                    }
                 }
             }
         }
@@ -123,6 +116,10 @@ public partial class Workers_Employee : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand(sql, conn);
 
             SqlDataReader myReader = cmd.ExecuteReader();
+            if (!myReader.HasRows)
+            {
+                return;
+            }
             while (myReader.Read())
             {
                 int numOfWorkers = Convert.ToInt16(myReader["Shift Info"].ToString().Trim());
