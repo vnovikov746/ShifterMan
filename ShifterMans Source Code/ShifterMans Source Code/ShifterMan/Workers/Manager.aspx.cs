@@ -2,6 +2,7 @@
 // #1  Need to add comments to the methods
 // #2  Need to take out the SQL from the for notation.
 // #3  Need to use try/catch notation only in the places needed. 
+//
 
 using System;
 using System.Collections.Generic;
