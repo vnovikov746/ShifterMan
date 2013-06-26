@@ -64,14 +64,14 @@ h2 {
 }
 
 h3 {
-    font-size: 1.2em;
-    
+    font-size: x-large;
+   
 }
 
 h4
 {
     font-size: 1.1em;
-    
+     text-align:left;
 }
 
 h5, h6
