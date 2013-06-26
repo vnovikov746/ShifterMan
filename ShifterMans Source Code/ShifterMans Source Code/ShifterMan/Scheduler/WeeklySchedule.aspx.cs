@@ -380,7 +380,7 @@ public partial class Scheduler_WeeklySchedule : System.Web.UI.Page
             {
                 if (WeeklyScheduleGrid.Rows[j].Cells[0].Text.Split('-')[0].Trim().Equals(begin))
                 {
-                    while (WeeklyScheduleGrid.Rows[j].Cells[0].Text.Split('-')[0].Trim().Equals(begin))
+                    while (WeeklyScheduleGrid.Rows[j].Cells[0].Text.Split('-')[0].Trim().Equals(begin) && j < WeeklyScheduleGrid.Rows.Count-1)
                     {
                         if (!selectedIndexes[j, index])
                         {
