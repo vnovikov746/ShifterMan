@@ -20,6 +20,7 @@
                      <h4>Koby Vurgaft: Chief Developer.</h4><br /><br />
                      
                      <h1>Product Support : kakifish@hotmail.com </h1></td>
+                     <h1>Wiki:<a href="https://github.com/kakifish/ShifterMan/wiki"></h1></td>
             </tr>
         </table>
     </p>
