@@ -13,12 +13,13 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
-// #1
+//This is the logic of the manager page
 public partial class Workers_Manager : System.Web.UI.Page
 {
     bool isLogged = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
     private ShiftTable weeklyShiftTable = new ShiftTable();
 
+    //On page load we fill the weekly shift table on this page, if the user is diconnected we redirect him to the main page
     protected void Page_Load(object sender, EventArgs e)
     {
         if (isLogged)
@@ -34,7 +35,7 @@ public partial class Workers_Manager : System.Web.UI.Page
             Response.Redirect("~/Account/Login.aspx");
         }
     }
-    // #1
+    //this method fills the list that includes the information about the weekly shift table
     private void fillWeeklyShiftTable(string org_name)
     {
         SqlConnection conn = new SqlConnection(getConnectionString());
@@ -89,13 +90,15 @@ public partial class Workers_Manager : System.Web.UI.Page
             conn.Close();
         }
     }
-    // #1
+    
+    //returns the sql connection string
     private string getConnectionString()
     {
         //sets the connection string from your web config file "ConnString" is the name of your Connection String
         return System.Configuration.ConfigurationManager.ConnectionStrings["ShifterManDB"].ConnectionString;
     }
-    // #1
+
+    //creates the grid view table of the weekly shift table on the manager.aspx page
     private void fillTable(string org_name)
     {
         DataTable dt = new DataTable();
@@ -148,7 +151,8 @@ public partial class Workers_Manager : System.Web.UI.Page
         }
         fillWeeklySchedule();
     }
-    // #1
+    
+    //fills the shifts on the grid view table of the weekly shift table on the manager.aspx page acoording the list that we filled in earlier
     private void fillWeeklySchedule()
     {
         int index = 0;
